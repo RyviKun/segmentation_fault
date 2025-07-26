@@ -3,26 +3,33 @@ using UnityEngine;
 
 public class TileManager : MonoBehaviour
 {
-    [SerializeField] private int _width, _height;
-
+    [SerializeField] private GridConfig _gridConfig;
     [SerializeField] private Tile _tilePrefab;
+    [SerializeField] private Tile _wallPrefab;
     void Start()
     {
-        Debug.Log("Hello world!");
+        
         bool isBlocked = true; 
-        for (int y = 0; y < _height; y++)
+        int count = 0;
+        for (int y = 0; y < _gridConfig.height; y++)
         {
             bool test = isBlocked;
-            for (int x = 0; x < _width; x++)
+            for (int x = 0; x < _gridConfig.width; x++)
             {
                 test = !test;
                 var spawnedTile = Instantiate(_tilePrefab, new Vector2(x, y), Quaternion.identity);
                 spawnedTile.GetComponent<SpriteRenderer>().color = test ?Color.white : Color.gray;
+                if (_gridConfig.layout[count] == TileType.Wall)
+                {
+                    Instantiate(_wallPrefab, new Vector2(x, y), Quaternion.identity);
+                }
                 
+                count++;
             }
             isBlocked = !isBlocked;
         }
     }
+
 
 
 }
