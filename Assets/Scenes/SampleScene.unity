@@ -163,9 +163,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 202d1311e1e676f43b9e76bb0ff8ca42, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _width: 5
-  _height: 5
+  _gridConfig: {fileID: 11400000, guid: e1c1b8c2dc0bc624e95ce3fba497d2ec, type: 2}
   _tilePrefab: {fileID: 5260492401322774807, guid: 124458559f26f8f41a7434f25defae67, type: 3}
+  _wallPrefab: {fileID: 5260492401322774807, guid: 5b17c92f8f7c82f4e823f6aaf1f4eb1a, type: 3}
+  _spawnPointPrefab: {fileID: 647558575535055905, guid: f9338e100a5f9374483951e830ed3f67, type: 3}
 --- !u!1 &519420028
 GameObject:
   m_ObjectHideFlags: 0
