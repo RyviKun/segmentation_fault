@@ -4,5 +4,6 @@ public enum TileType
     Player,
     Enemy,
     Wall,
-    Item
+    Item,
+    SpawnPoint
 }
