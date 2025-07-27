@@ -9,7 +9,7 @@ public class TileManager : MonoBehaviour
     [SerializeField] private Tile _wallPrefab;
     [SerializeField] private GameObject _spawnPointPrefab;
     private Vector2 spawnPoint;
-    void Start()
+    void Awake()
     {
         
         bool isBlocked = true; 
