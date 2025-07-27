@@ -14,8 +14,208 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   width: 10
   height: 10
-  layout: 00000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000003000000030000000300000000000000000000000000000000000000000000000000000000000000000000000500000003000000000000000000000000000000
+  layout:
+  - type: 0
+    direction: 0
+  - type: 0
+    direction: 0
+  - type: 0
+    direction: 0
+  - type: 0
+    direction: 0
+  - type: 0
+    direction: 0
+  - type: 0
+    direction: 0
+  - type: 0
+    direction: 0
+  - type: 0
+    direction: 0
+  - type: 0
+    direction: 0
+  - type: 0
+    direction: 0
+  - type: 0
+    direction: 0
+  - type: 0
+    direction: 0
+  - type: 0
+    direction: 0
+  - type: 0
+    direction: 0
+  - type: 0
+    direction: 0
+  - type: 0
+    direction: 0
+  - type: 0
+    direction: 0
+  - type: 0
+    direction: 0
+  - type: 0
+    direction: 0
+  - type: 0
+    direction: 0
+  - type: 0
+    direction: 0
+  - type: 0
+    direction: 0
+  - type: 0
+    direction: 0
+  - type: 0
+    direction: 0
+  - type: 0
+    direction: 0
+  - type: 0
+    direction: 0
+  - type: 0
+    direction: 0
+  - type: 0
+    direction: 0
+  - type: 0
+    direction: 0
+  - type: 0
+    direction: 0
+  - type: 0
+    direction: 0
+  - type: 0
+    direction: 0
+  - type: 0
+    direction: 0
+  - type: 0
+    direction: 0
+  - type: 0
+    direction: 0
+  - type: 0
+    direction: 0
+  - type: 0
+    direction: 0
+  - type: 0
+    direction: 0
+  - type: 0
+    direction: 0
+  - type: 0
+    direction: 0
+  - type: 0
+    direction: 0
+  - type: 0
+    direction: 0
+  - type: 0
+    direction: 0
+  - type: 0
+    direction: 0
+  - type: 0
+    direction: 0
+  - type: 0
+    direction: 0
+  - type: 0
+    direction: 0
+  - type: 0
+    direction: 0
+  - type: 0
+    direction: 0
+  - type: 0
+    direction: 0
+  - type: 0
+    direction: 0
+  - type: 0
+    direction: 0
+  - type: 0
+    direction: 0
+  - type: 0
+    direction: 0
+  - type: 0
+    direction: 0
+  - type: 0
+    direction: 0
+  - type: 0
+    direction: 0
+  - type: 0
+    direction: 0
+  - type: 0
+    direction: 0
+  - type: 0
+    direction: 0
+  - type: 0
+    direction: 0
+  - type: 0
+    direction: 0
+  - type: 0
+    direction: 0
+  - type: 0
+    direction: 0
+  - type: 0
+    direction: 0
+  - type: 0
+    direction: 0
+  - type: 0
+    direction: 0
+  - type: 0
+    direction: 0
+  - type: 0
+    direction: 0
+  - type: 0
+    direction: 0
+  - type: 0
+    direction: 0
+  - type: 0
+    direction: 0
+  - type: 0
+    direction: 0
+  - type: 0
+    direction: 0
+  - type: 0
+    direction: 0
+  - type: 0
+    direction: 0
+  - type: 0
+    direction: 0
+  - type: 0
+    direction: 0
+  - type: 0
+    direction: 0
+  - type: 0
+    direction: 0
+  - type: 0
+    direction: 0
+  - type: 0
+    direction: 0
+  - type: 0
+    direction: 0
+  - type: 0
+    direction: 0
+  - type: 1
+    direction: 0
+  - type: 1
+    direction: 0
+  - type: 1
+    direction: 0
+  - type: 0
+    direction: 0
+  - type: 0
+    direction: 0
+  - type: 0
+    direction: 0
+  - type: 0
+    direction: 0
+  - type: 0
+    direction: 0
+  - type: 0
+    direction: 0
+  - type: 0
+    direction: 0
+  - type: 0
+    direction: 0
+  - type: 5
+    direction: 0
+  - type: 1
+    direction: 0
+  - type: 0
+    direction: 0
+  - type: 0
+    direction: 0
+  - type: 0
+    direction: 0
   layoutString: "\r0 0 0 0 0 0 0 0 0 0\r\n0 0 0 0 0 0 0 0 0 0\r\n0 0 0 0 0 0 0 0
     0 0\r\n0 0 0 0 0 0 0 0 0 0\r\n0 0 0 0 0 0 0 0 0 0\n0 0 0 0 0 0 0 0 0 0\r\n0 0
     0 0 0 0 0 0 0 0\r\n0 0 0 0 0 0 0 0 0 0\r\n0 0 0 0 2 2 2 0 0 0\r\n0 0 0 0 0 1
-    0 0 0 0"
+    2 0 0 0"

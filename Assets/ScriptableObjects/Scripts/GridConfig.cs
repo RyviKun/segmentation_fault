@@ -5,13 +5,14 @@ using UnityEngine;
 public class GridConfig : ScriptableObject
 {
     public int width, height;
-    public TileType[] layout;
+    public TileData[] layout;
     [TextArea]
-    public string layoutString = "100011100"; // You enter this in the Inspector!
+    public string layoutString;
+
 
     public void InitializeLayout()
     {
-        layout = new TileType[width * height];
+        layout = new TileData[width * height];
     }
 
     public void ParseLayout()
@@ -20,21 +21,22 @@ public class GridConfig : ScriptableObject
                                   .Replace("\n", "")
                                   .Replace("\r", "")
                                   .Replace("\t", "");
-        layout = new TileType[width * height];
-        for (int i = 0; i < cleaned.Length && i < cleaned.Length; i++)
+        layout = new TileData[width * height];
+        for (int i = 0; i < cleaned.Length ; i++)
         {
             char c = cleaned[i];
-            layout[i] = CharToTileType(c);
+            layout[i] = new TileData(CharToTileData(c), 0);
         }
     }
 
-    private TileType CharToTileType(char c)
+    private TileType CharToTileData(char c)
     {
         return c switch
         {
             '0' => TileType.Empty,
             '1' => TileType.SpawnPoint,
-            '2' => TileType.Wall
+            '2' => TileType.Wall,
+            '3' => TileType.Enemy
         };
     }
 }
