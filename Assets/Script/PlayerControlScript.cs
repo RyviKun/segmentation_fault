@@ -1,14 +1,15 @@
 using UnityEngine;
+using System.Collections.Generic;
 
+[RequireComponent(typeof(MoveDetection))]
 public class PlayerControlScript : MonoBehaviour
 {
     [SerializeField] private TileManager _tileManager;
-
-    [Header("Movement Colliders")]
-    [SerializeField] private MoveDetection leftTile;
-    [SerializeField] private MoveDetection rightTile;
-    [SerializeField] private MoveDetection upTile;
-    [SerializeField] private MoveDetection downTile;
+    private MoveDetection _moveDetection;
+    void Awake()
+    {
+        _moveDetection = GetComponent<MoveDetection>();
+    }
     void Start()
     {
         transform.position = new Vector3(_tileManager.GetSpawnPoint().x, _tileManager.GetSpawnPoint().y, -0.001f);
@@ -18,25 +19,33 @@ public class PlayerControlScript : MonoBehaviour
     {
 
         // Directional movement controls
-        if (Input.GetKeyDown(KeyCode.A) && leftTile.IsMovableTo())
+        if(Input.GetKeyDown(KeyCode.W) || Input.GetKeyDown(KeyCode.D) || Input.GetKeyDown(KeyCode.S) || Input.GetKeyDown(KeyCode.A))
         {
-            transform.position = Vector2.MoveTowards(this.transform.position, leftTile.GetTilePosition(), 1f);
+            List<Vector3?> availabity = _moveDetection.GetPosition();
+            if (Input.GetKeyDown(KeyCode.W) && availabity[0].HasValue)
+            {
+                Debug.Log("Up");
+                transform.position = availabity[0].Value;
+            }
+            else if (Input.GetKeyDown(KeyCode.D) && availabity[1].HasValue)
+            {
+                Debug.Log("Right");
+                transform.position = availabity[1].Value;
+            }
+            else if (Input.GetKeyDown(KeyCode.S) &&  availabity[2].HasValue)
+            {
+                Debug.Log("Down");
+                transform.position = availabity[2].Value;
+            }
+            else if (Input.GetKeyDown(KeyCode.A) && availabity[3].HasValue)
+            {
+                Debug.Log("Left");
+                transform.position = availabity[3].Value;
+            }
         }
-        else if (Input.GetKeyDown(KeyCode.D) && rightTile.IsMovableTo())
-        {
-            transform.position = Vector2.MoveTowards(this.transform.position, rightTile.GetTilePosition(), 1f);
-        }
-        else if (Input.GetKeyDown(KeyCode.W) && upTile.IsMovableTo())
-        {
-            transform.position = Vector2.MoveTowards(this.transform.position, upTile.GetTilePosition(), 1f);
-        }
-        else if (Input.GetKeyDown(KeyCode.S) && downTile.IsMovableTo())
-        {
-            transform.position = Vector2.MoveTowards(this.transform.position, downTile.GetTilePosition(), 1f);
-        }
-        else
-        {
+      
+       
 
-        }
+    
     }
 }

@@ -1,30 +1,50 @@
+
+using System.Collections.Generic;
 using UnityEngine;
 
 public class MoveDetection : MonoBehaviour
-{
-    private Vector2 tilePosition;
-    private bool isMovableTo = false;
-    private void OnTriggerStay2D(Collider2D collision)
-    {
-        if (collision.gameObject.tag == "FreeTile")
-        {
-            isMovableTo = true;
-            tilePosition = collision.transform.position;
-        }
-        else
-        {
-            isMovableTo = false;
-            tilePosition = collision.transform.position;
-        }
-    }
+{ 
+    RaycastHit hitUp, hitRight, hitDown, hitLeft;
 
-    public Vector2 GetTilePosition()
+    private void FixedUpdate()
     {
-        return tilePosition;
+        Debug.DrawRay(transform.position + new Vector3(0, 1, 3f), Vector3.back * 4, Color.white);
+        Debug.DrawRay(transform.position + new Vector3(1, 0, 3f), Vector3.back * 4, Color.white);
+        Debug.DrawRay(transform.position + new Vector3(0, -1, 3f), Vector3.back * 4, Color.white);
+        Debug.DrawRay(transform.position + new Vector3(-1, 0, 3f), Vector3.back * 4, Color.white);
     }
+    public List<Vector3?> GetPosition()
+    {
+        Debug.Log("Hit initiated");
 
-    public bool IsMovableTo()
-    {
-        return isMovableTo;
+        RaycastHit2D hitUp = Physics2D.Raycast(transform.position + new Vector3(0, 1, 0), Vector2.down, 3f);
+        RaycastHit2D hitRight = Physics2D.Raycast(transform.position + new Vector3(1, 0, 0), Vector2.down, 3f);
+        RaycastHit2D hitDown = Physics2D.Raycast(transform.position + new Vector3(0, -1, 0), Vector2.down, 3f);
+        RaycastHit2D hitLeft = Physics2D.Raycast(transform.position + new Vector3(-1, 0, 0), Vector2.down, 3f);
+
+        List<Vector3?> hitPositions = new List<Vector3?>();
+
+        void TryAddHit(RaycastHit2D hit, string direction)
+        {
+            if (hit.collider != null && hit.collider.CompareTag("FreeTile"))
+            {
+                //Debug.Log($"[{direction}] Object name [{hit.transform.name}] with Tag [{hit.transform.tag}]");
+                hitPositions.Add(hit.transform.position);
+            }
+            else
+            {
+                hitPositions.Add(null);
+            }
+        }
+
+        // Process each direction
+        TryAddHit(hitUp, "Up");
+        TryAddHit(hitRight, "Right");
+        TryAddHit(hitDown, "Down");
+        TryAddHit(hitLeft, "Left");
+
+        //Debug.Log(hitPositions);
+        return hitPositions;
     }
+    
 }
