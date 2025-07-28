@@ -1,5 +1,6 @@
 using System;
 using UnityEngine;
+using static UnityEngine.Rendering.STP;
 
 
 public class TileManager : MonoBehaviour
@@ -22,13 +23,14 @@ public class TileManager : MonoBehaviour
                 test = !test;
                 var spawnedTile = Instantiate(_tilePrefab, new Vector2(x, y), Quaternion.identity);
                 spawnedTile.GetComponent<SpriteRenderer>().color = test ?Color.white : Color.gray;
-                Debug.Log(_gridConfig.layout);
-                if (_gridConfig.layout[count].type == TileType.Wall)
+                _gridConfig.ParseLayout();
+                Debug.Log("Variable " + _gridConfig.layout[0].GetType());
+                if (_gridConfig.layout[count].GetType() == typeof(WallTile))
                 {
                     Instantiate(_wallPrefab, new Vector2(x, y), Quaternion.identity);
                 }
 
-                if (_gridConfig.layout[count].type == TileType.SpawnPoint)
+                if (_gridConfig.layout[count].GetType() == typeof(SpawnTile))
                 {
                     var spawnPointObj = Instantiate(_spawnPointPrefab, new Vector2(x, y), Quaternion.identity);
                     spawnPoint = spawnPointObj.transform.position;
