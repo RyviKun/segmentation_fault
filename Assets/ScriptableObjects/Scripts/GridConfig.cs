@@ -5,36 +5,48 @@ using UnityEngine;
 public class GridConfig : ScriptableObject
 {
     public int width, height;
-    public TileType[] layout;
+    [SerializeField] public TileData[] layout;
     [TextArea]
-    public string layoutString = "100011100"; // You enter this in the Inspector!
+    public string layoutString;
 
     public void InitializeLayout()
     {
-        layout = new TileType[width * height];
+        layout = new TileData[width * height];
     }
 
     public void ParseLayout()
     {
+        InitializeLayout();
         string cleaned = layoutString.Replace(" ", "")
                                   .Replace("\n", "")
                                   .Replace("\r", "")
                                   .Replace("\t", "");
-        layout = new TileType[width * height];
-        for (int i = 0; i < cleaned.Length && i < cleaned.Length; i++)
+        string[] splitted = cleaned.Split(',');
+        for (int i = 0; i < splitted.Length ; i++)
         {
-            char c = cleaned[i];
-            layout[i] = CharToTileType(c);
+            string[] current = splitted[i].Split("-");
+            switch (current[0])
+            {
+                case "0":
+                    layout[i] = new EmptyTile(0);
+                    Debug.Log("Empty");
+                    break;
+                case "1":
+                    layout[i] = new SpawnTile(0);
+                    Debug.Log("Player");
+                    break;
+                case "2":
+                    layout[i] = new WallTile(0);
+                    Debug.Log("Wall");
+                    break;
+                case "3":
+                    layout[i] = new EnemyTile(0, current[1], int.Parse(current[2]));
+                    Debug.Log("Enemy");
+                    break;
+
+            }
         }
     }
 
-    private TileType CharToTileType(char c)
-    {
-        return c switch
-        {
-            '0' => TileType.Empty,
-            '1' => TileType.SpawnPoint,
-            '2' => TileType.Wall
-        };
-    }
+   
 }

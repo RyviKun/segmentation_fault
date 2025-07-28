@@ -26,21 +26,25 @@ public class PlayerControlScript : MonoBehaviour
             {
                 Debug.Log("Up");
                 transform.position = availabity[0].Value;
+                PlayerEvent.PlayerMoved();
             }
             else if (Input.GetKeyDown(KeyCode.D) && availabity[1].HasValue)
             {
                 Debug.Log("Right");
                 transform.position = availabity[1].Value;
+                PlayerEvent.PlayerMoved();
             }
             else if (Input.GetKeyDown(KeyCode.S) &&  availabity[2].HasValue)
             {
                 Debug.Log("Down");
                 transform.position = availabity[2].Value;
+                PlayerEvent.PlayerMoved();
             }
             else if (Input.GetKeyDown(KeyCode.A) && availabity[3].HasValue)
             {
                 Debug.Log("Left");
                 transform.position = availabity[3].Value;
+                PlayerEvent.PlayerMoved();
             }
         }
       

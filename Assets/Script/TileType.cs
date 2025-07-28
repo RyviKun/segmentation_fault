@@ -1,9 +1,12 @@
+
 public enum TileType
 {
     Empty,
+    Wall,
     Player,
     Enemy,
-    Wall,
     Item,
     SpawnPoint
 }
+
+
