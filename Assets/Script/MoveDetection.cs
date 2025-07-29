@@ -3,7 +3,8 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class MoveDetection : MonoBehaviour
-{ 
+{
+    public LayerMask raycastMask;
     RaycastHit hitUp, hitRight, hitDown, hitLeft;
 
     private void FixedUpdate()
@@ -17,10 +18,10 @@ public class MoveDetection : MonoBehaviour
     {
         Debug.Log("Hit initiated");
 
-        RaycastHit2D hitUp = Physics2D.Raycast(transform.position + new Vector3(0, 1, 0), Vector2.down, 3f);
-        RaycastHit2D hitRight = Physics2D.Raycast(transform.position + new Vector3(1, 0, 0), Vector2.down, 3f);
-        RaycastHit2D hitDown = Physics2D.Raycast(transform.position + new Vector3(0, -1, 0), Vector2.down, 3f);
-        RaycastHit2D hitLeft = Physics2D.Raycast(transform.position + new Vector3(-1, 0, 0), Vector2.down, 3f);
+        RaycastHit2D hitUp = Physics2D.Raycast(transform.position + new Vector3(0, 1, 0), Vector2.down, 3f, raycastMask);
+        RaycastHit2D hitRight = Physics2D.Raycast(transform.position + new Vector3(1, 0, 0), Vector2.down, 3f, raycastMask);
+        RaycastHit2D hitDown = Physics2D.Raycast(transform.position + new Vector3(0, -1, 0), Vector2.down, 3f, raycastMask);
+        RaycastHit2D hitLeft = Physics2D.Raycast(transform.position + new Vector3(-1, 0, 0), Vector2.down, 3f, raycastMask);
 
         List<Vector3?> hitPositions = new List<Vector3?>();
 

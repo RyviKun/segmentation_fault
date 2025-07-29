@@ -16,8 +16,8 @@ MonoBehaviour:
   height: 2
   layoutString: '0,
 
-    1-10,
+    1,
 
     0,
 
-    0'
+    3-2-3-1234'
