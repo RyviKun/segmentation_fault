@@ -29,19 +29,19 @@ public class GridConfig : ScriptableObject
             {
                 case "0":
                     layout[i] = new EmptyTile(0);
-                    Debug.Log("Empty");
+                
                     break;
                 case "1":
                     layout[i] = new SpawnTile(0);
-                    Debug.Log("Player");
+      
                     break;
                 case "2":
                     layout[i] = new WallTile(0);
-                    Debug.Log("Wall");
+         
                     break;
                 case "3":
-                    layout[i] = new EnemyTile(0, current[1], int.Parse(current[2]));
-                    Debug.Log("Enemy");
+                    layout[i] = new EnemyTile(int.Parse(current[1]), int.Parse(current[2]), current[3]);
+           
                     break;
 
             }
