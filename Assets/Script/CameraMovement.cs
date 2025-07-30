@@ -2,13 +2,13 @@ using UnityEngine;
 
 public class CameraMovement : MonoBehaviour
 {
-    private bool followingPlayer = true;
-    private Vector3 Origin;
-    private Vector3 Difference;
-    private Vector2 resetPosition;
-    private float width;
-    private float height;
-    private Vector3 absolutePos;
+    private bool _followingPlayer = true;
+    private Vector3 _origin;
+    private Vector3 _difference;
+    private Vector2 _resetPosition;
+    private float _width;
+    private float _height;
+    private Vector3 _absolutePos;
     [Header("GridObject")]
     public GridConfig _gridConfig;
 
@@ -17,29 +17,29 @@ public class CameraMovement : MonoBehaviour
 
     // [Header("Limiters")]
 
-    private float LeftXLimit = -10f;
+    private float _leftXLimit = -10f;
 
-    private float RightXLimit = 10f;
+    private float _rightXLimit = 10f;
 
-    private float UpperYLimit = 10f;
+    private float _upperYLimit = 10f;
 
-    private float BottomYLimit = -10f;
+    private float _bottomYLimit = -10f;
     void Start()
     {
 
-        resetPosition = plr.transform.position;
-        width = _gridConfig.width;
-        height = _gridConfig.height;
-        absolutePos = new Vector3(-.5f + (width / 2), .5f + (height / 2), -10);
+        _resetPosition = plr.transform.position;
+        _width = _gridConfig.width;
+        _height = _gridConfig.height;
+        _absolutePos = new Vector3(-.5f + (_width / 2), .5f + (_height / 2), -10);
         setCamLimit();
-        Camera.main.transform.position = new Vector3(resetPosition.x, resetPosition.y, -10);
+        Camera.main.transform.position = new Vector3(_resetPosition.x, _resetPosition.y, -10);
 
     }
 
     // Update is called once per frame
     void Update()
     {
-        resetPosition = plr.transform.position;
+        _resetPosition = plr.transform.position;
 
         PanCamera();
         ResetCamera();
@@ -51,30 +51,30 @@ public class CameraMovement : MonoBehaviour
     {
         if (Input.GetKeyDown(KeyCode.R))
         {
-            followingPlayer = true;
+            _followingPlayer = true;
             Debug.Log("Camera Reset");
-            Debug.Log(resetPosition);
-            Camera.main.transform.position = new Vector3(resetPosition.x, resetPosition.y, -10);
+            Debug.Log(_resetPosition);
+            Camera.main.transform.position = new Vector3(_resetPosition.x, _resetPosition.y, -10);
         }
-        if (followingPlayer == true)
+        if (_followingPlayer == true)
         {
-            Camera.main.transform.position = new Vector3(resetPosition.x, resetPosition.y, -10);
+            Camera.main.transform.position = new Vector3(_resetPosition.x, _resetPosition.y, -10);
         }
     }
     private void PanCamera()
     {
         if (Input.GetMouseButtonDown(1))
         {
-            followingPlayer = false;
-            Origin = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+            _followingPlayer = false;
+            _origin = Camera.main.ScreenToWorldPoint(Input.mousePosition);
         }
         if (Input.GetMouseButton(1))
         {
-            followingPlayer = false;
-            Difference = Origin - Camera.main.ScreenToWorldPoint(Input.mousePosition);
+            _followingPlayer = false;
+            _difference = _origin - Camera.main.ScreenToWorldPoint(Input.mousePosition);
 
-            print("origin" + Origin + " newPosition " + Camera.main.ScreenToWorldPoint(Input.mousePosition) + " =difference " + Difference);
-            Camera.main.transform.position = ClampCamera(Camera.main.transform.position + Difference);
+            // print("origin" + _origin + " newPosition " + Camera.main.ScreenToWorldPoint(Input.mousePosition) + " =difference " + _difference);
+            Camera.main.transform.position = ClampCamera(Camera.main.transform.position + _difference);
         }
     }
     private Vector3 ClampCamera(Vector3 targetPos)
@@ -82,10 +82,10 @@ public class CameraMovement : MonoBehaviour
         float camHeight = Camera.main.orthographicSize;
         float camWidth = Camera.main.orthographicSize * Camera.main.aspect;
 
-        float minX = LeftXLimit + camWidth;
-        float maxX = RightXLimit - camWidth;
-        float minY = BottomYLimit + camHeight;
-        float maxY = UpperYLimit - camHeight;
+        float minX = _leftXLimit + camWidth;
+        float maxX = _rightXLimit - camWidth;
+        float minY = _bottomYLimit + camHeight;
+        float maxY = _upperYLimit - camHeight;
 
         float newX = Mathf.Clamp(targetPos.x, minX, maxX);
         float newY = Mathf.Clamp(targetPos.y, minY, maxY);
@@ -94,23 +94,16 @@ public class CameraMovement : MonoBehaviour
     }
     private void setCamLimit()
     {
-        // LeftXLimit = (-.5f) - 10f;
-        // RightXLimit = (.5f + width) + 10f;
-        // BottomYLimit = .5f - 10f;
-        // UpperYLimit = (1.5f + height) + 10f;
-        LeftXLimit = (-.5f) - 10f;
-        RightXLimit = (.5f + width - 1) + 10f;
-        BottomYLimit = .5f - 6f;
-        UpperYLimit = (1.5f + height - 1) + 6f;
 
-        Debug.Log("LeftXLimit" + LeftXLimit);
-        Debug.Log("RightXLimit" + RightXLimit);
-        Debug.Log("BottomYLimit" + BottomYLimit);
-        Debug.Log("UpperYLimit" + UpperYLimit);
-        // Debug.Log("LeftXLimit" + LeftXLimit);
-        // Debug.Log("RightXLimit" + RightXLimit);
-        // Debug.Log("BottomYLimit" + BottomYLimit);
-        // Debug.Log("BottomYLimit" + BottomYLimit);
+        _leftXLimit = (-.5f) - 10f;
+        _rightXLimit = (.5f + _width - 1) + 10f;
+        _bottomYLimit = .5f - 6f;
+        _upperYLimit = (1.5f + _height - 1) + 6f;
+
+        // Debug.Log("LeftXLimit" + _leftXLimit);
+        // Debug.Log("RightXLimit" + _rightXLimit);
+        // Debug.Log("BottomYLimit" + _bottomYLimit);
+        // Debug.Log("UpperYLimit" + _upperYLimit);
 
     }
 
