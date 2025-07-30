@@ -2,26 +2,38 @@ using UnityEngine;
 
 public class CameraMovement : MonoBehaviour
 {
-
+    private bool followingPlayer = true;
     private Vector3 Origin;
     private Vector3 Difference;
     private Vector2 resetPosition;
+    private float width;
+    private float height;
+    private Vector3 absolutePos;
+    [Header("GridObject")]
+    public GridConfig _gridConfig;
 
     [Header("Player Object")]
     public GameObject plr;
 
-    [Header("Limiters")]
+    // [Header("Limiters")]
 
-    public float LeftXLimit = -10f;
+    private float LeftXLimit = -10f;
 
-    public int RightXLimit = 10;
+    private float RightXLimit = 10f;
 
-    public int UpperYLimit = 10;
+    private float UpperYLimit = 10f;
 
-    public int BottomYLimit = -10;
+    private float BottomYLimit = -10f;
     void Start()
     {
+
         resetPosition = plr.transform.position;
+        width = _gridConfig.width;
+        height = _gridConfig.height;
+        absolutePos = new Vector3(-.5f + (width / 2), .5f + (height / 2), -10);
+        setCamLimit();
+        Camera.main.transform.position = new Vector3(resetPosition.x, resetPosition.y, -10);
+
     }
 
     // Update is called once per frame
@@ -39,8 +51,13 @@ public class CameraMovement : MonoBehaviour
     {
         if (Input.GetKeyDown(KeyCode.R))
         {
+            followingPlayer = true;
             Debug.Log("Camera Reset");
             Debug.Log(resetPosition);
+            Camera.main.transform.position = new Vector3(resetPosition.x, resetPosition.y, -10);
+        }
+        if (followingPlayer == true)
+        {
             Camera.main.transform.position = new Vector3(resetPosition.x, resetPosition.y, -10);
         }
     }
@@ -48,10 +65,12 @@ public class CameraMovement : MonoBehaviour
     {
         if (Input.GetMouseButtonDown(1))
         {
+            followingPlayer = false;
             Origin = Camera.main.ScreenToWorldPoint(Input.mousePosition);
         }
         if (Input.GetMouseButton(1))
         {
+            followingPlayer = false;
             Difference = Origin - Camera.main.ScreenToWorldPoint(Input.mousePosition);
 
             print("origin" + Origin + " newPosition " + Camera.main.ScreenToWorldPoint(Input.mousePosition) + " =difference " + Difference);
@@ -72,6 +91,27 @@ public class CameraMovement : MonoBehaviour
         float newY = Mathf.Clamp(targetPos.y, minY, maxY);
 
         return new Vector3(newX, newY, targetPos.z);
+    }
+    private void setCamLimit()
+    {
+        // LeftXLimit = (-.5f) - 10f;
+        // RightXLimit = (.5f + width) + 10f;
+        // BottomYLimit = .5f - 10f;
+        // UpperYLimit = (1.5f + height) + 10f;
+        LeftXLimit = (-.5f) - 10f;
+        RightXLimit = (.5f + width - 1) + 10f;
+        BottomYLimit = .5f - 6f;
+        UpperYLimit = (1.5f + height - 1) + 6f;
+
+        Debug.Log("LeftXLimit" + LeftXLimit);
+        Debug.Log("RightXLimit" + RightXLimit);
+        Debug.Log("BottomYLimit" + BottomYLimit);
+        Debug.Log("UpperYLimit" + UpperYLimit);
+        // Debug.Log("LeftXLimit" + LeftXLimit);
+        // Debug.Log("RightXLimit" + RightXLimit);
+        // Debug.Log("BottomYLimit" + BottomYLimit);
+        // Debug.Log("BottomYLimit" + BottomYLimit);
+
     }
 
 }
