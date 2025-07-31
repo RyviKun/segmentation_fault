@@ -43,7 +43,10 @@ public class GridConfig : ScriptableObject
                     layout[i] = new EnemyTile(int.Parse(current[1]), int.Parse(current[2]), current[3]);
            
                     break;
+                case "4":
+                    layout[i] = new ItemTile(0);
 
+                    break;
             }
         }
     }

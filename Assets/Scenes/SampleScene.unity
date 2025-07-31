@@ -168,6 +168,7 @@ MonoBehaviour:
   _wallPrefab: {fileID: 5260492401322774807, guid: 5b17c92f8f7c82f4e823f6aaf1f4eb1a, type: 3}
   _spawnPointPrefab: {fileID: 647558575535055905, guid: f9338e100a5f9374483951e830ed3f67, type: 3}
   _enemyPrefab: {fileID: 4556889829667805991, guid: 83d37a761904d6248a453e0e0021944a, type: 3}
+  _itemPrefab: {fileID: 4290027834419517038, guid: 4720a88eb16c3214cad51ebfe14f4c4a, type: 3}
 --- !u!1 &519420028
 GameObject:
   m_ObjectHideFlags: 0
@@ -512,6 +513,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _tileManager: {fileID: 368271890}
+  _itemData: {fileID: 11400000, guid: d85fb08e4fc1ebf43b0ee77300f60a29, type: 2}
 --- !u!114 &1123907808
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -526,7 +528,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   raycastMask:
     serializedVersion: 2
-    m_Bits: 119
+    m_Bits: 55
+  _itemData: {fileID: 11400000, guid: d85fb08e4fc1ebf43b0ee77300f60a29, type: 2}
 --- !u!58 &1123907810
 CircleCollider2D:
   m_ObjectHideFlags: 0

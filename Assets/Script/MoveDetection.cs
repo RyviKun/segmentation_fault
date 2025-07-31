@@ -5,8 +5,12 @@ using UnityEngine;
 public class MoveDetection : MonoBehaviour
 {
     public LayerMask raycastMask;
-    RaycastHit hitUp, hitRight, hitDown, hitLeft;
+    [SerializeField] private ItemData _itemData;
 
+    private void Start()
+    {
+        _itemData.SetItemInitial();
+    }
     private void FixedUpdate()
     {
         Debug.DrawRay(transform.position + new Vector3(0, 1, 3f), Vector3.back * 4, Color.white);
@@ -27,7 +31,7 @@ public class MoveDetection : MonoBehaviour
 
         void TryAddHit(RaycastHit2D hit, string direction)
         {
-            if (hit.collider != null && hit.collider.CompareTag("FreeTile"))
+            if (hit.collider != null && hit.collider.CompareTag("FreeTile") || hit.collider != null && hit.collider.CompareTag("Item"))
             {
                 Debug.Log($"from [{this.name}] [{direction}] Object name [{hit.transform.name}] with Tag [{hit.transform.tag}]");
                 hitPositions.Add(hit.transform.position);
@@ -47,5 +51,15 @@ public class MoveDetection : MonoBehaviour
         //Debug.Log(hitPositions);
         return hitPositions;
     }
-    
+
+    public void GetItemCheck()
+    {
+        RaycastHit2D hitCenter = Physics2D.Raycast(transform.position + new Vector3(0, 0, 0), Vector2.down, 3f, raycastMask);
+        if (hitCenter.collider.CompareTag("Item"))
+        {
+            Destroy(hitCenter.collider.gameObject);
+            _itemData.ItemObtained();
+            Debug.Log("Obtained Item");
+        }
+    }
 }

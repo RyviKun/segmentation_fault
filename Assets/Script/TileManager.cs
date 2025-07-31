@@ -11,6 +11,7 @@ public class TileManager : MonoBehaviour
     [SerializeField] private Tile _wallPrefab;
     [SerializeField] private GameObject _spawnPointPrefab;
     [SerializeField] private GameObject _enemyPrefab;
+    [SerializeField] private GameObject _itemPrefab;
     private Vector2 spawnPoint;
     void Awake()
     {
@@ -44,6 +45,11 @@ public class TileManager : MonoBehaviour
                     var enemyObj = Instantiate(_enemyPrefab, new Vector2(x, y), ParseRotation(enemyTile.direction));
                     Debug.Log("Rotation " + enemyTile.direction);
                     enemyObj.GetComponent<EntityMove>().SetEnemyRoute(enemyTile.route);
+                }
+
+                if (current is ItemTile)
+                {
+                    Instantiate(_itemPrefab, new Vector2(x, y), Quaternion.identity);
                 }
                 count++;
             }
