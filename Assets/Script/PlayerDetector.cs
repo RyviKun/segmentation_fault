@@ -1,6 +1,7 @@
 using NUnit.Framework;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 using static UnityEditor.Progress;
 using static UnityEditor.Rendering.CameraUI;
@@ -13,6 +14,7 @@ public class PlayerDetector : MonoBehaviour
     private CircleCollider2D _circleCollider2D;
     public int initialPoolSize = 20;
     bool _isRendering = false;
+    private Transform? _playerPosition = null;
 
 
     private List<GameObject> _dangerTilePool = new ();
@@ -31,6 +33,7 @@ public class PlayerDetector : MonoBehaviour
     {
         List<RaycastHit2D> tileList = new ();
         HashSet<Collider2D> seenColliders = new();
+        Transform? _playerPositionTemp = null;
         for (int i = _fov * 2 + 1; 0 < i; i--)
         {
 
@@ -42,25 +45,28 @@ public class PlayerDetector : MonoBehaviour
             Vector2 rotatedDirection2 = new Vector2(Mathf.Cos(angle2 + currentAngle), Mathf.Sin(angle2 + currentAngle));
             Debug.DrawRay(transform.position, rotatedDirection2 * _range, Color.red);
 
-            RaycastHit2D[] hits = Physics2D.RaycastAll(transform.position, rotatedDirection2, _range, LayerMask.GetMask("Ground"));
-
+            RaycastHit2D[] hits = Physics2D.RaycastAll(transform.position, rotatedDirection2, _range, (1 << LayerMask.NameToLayer("Ground")) | (1 << LayerMask.NameToLayer("Player")));
             foreach (RaycastHit2D hit in hits)
             {
+               
                 if (hit.collider != null && seenColliders.Add(hit.collider))
                 {
-                    //Debug.Log("Found object : " + hit.collider.name);
-                    if (!tileList.Contains(hit))
-                    {
+                    //Debug.Log("Found object : " + hit.collider.name
                         tileList.Add(hit);
-                    }
+                        if (hit.collider.CompareTag("Player"))
+                        {
+                        _playerPositionTemp = hit.collider.transform;
+                        }
+
                 }
+                
             }
 
         }
         //Debug.Log("List contents : " + tileList.Count);
         //Debug.Log("List contents:");
         if(!_isRendering) StartCoroutine(RenderDangerTile(tileList));
-
+        _playerPosition = _playerPositionTemp;
 
     }
 
@@ -102,5 +108,8 @@ public class PlayerDetector : MonoBehaviour
         return newTile;
     }
 
-
+    public Transform? GetPlayerTransform()
+    {
+        return _playerPosition;
+    }
 }
