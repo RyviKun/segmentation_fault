@@ -150,7 +150,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   raycastMask:
     serializedVersion: 2
-    m_Bits: 0
+    m_Bits: 119
 --- !u!58 &4279379755743313363
 CircleCollider2D:
   m_ObjectHideFlags: 0
@@ -199,6 +199,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 22d97934d516c0146ac1f9fb2136ec3d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _range: 5
+  _fov: 1
+  _dangerTilePrefab: {fileID: 1807378046668182583, guid: db32bd232e0fb924497dbefd32b41838, type: 3}
+  initialPoolSize: 20
 --- !u!1 &4726808798742037164
 GameObject:
   m_ObjectHideFlags: 0
@@ -224,13 +228,13 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4726808798742037164}
   serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0.362, z: 0}
+  m_LocalRotation: {x: 0, y: 0, z: -0.7071068, w: 0.7071068}
+  m_LocalPosition: {x: 0.367, y: 0, z: 0}
   m_LocalScale: {x: 0.16, y: 0.16, z: 0.16}
   m_ConstrainProportionsScale: 1
   m_Children: []
   m_Father: {fileID: 5341215650922228818}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: -90}
 --- !u!212 &2982464615296221414
 SpriteRenderer:
   m_ObjectHideFlags: 0

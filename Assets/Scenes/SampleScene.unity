@@ -526,7 +526,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   raycastMask:
     serializedVersion: 2
-    m_Bits: 0
+    m_Bits: 119
 --- !u!58 &1123907810
 CircleCollider2D:
   m_ObjectHideFlags: 0

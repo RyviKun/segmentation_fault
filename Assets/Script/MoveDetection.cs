@@ -18,10 +18,10 @@ public class MoveDetection : MonoBehaviour
     {
         Debug.Log("Hit initiated");
 
-        RaycastHit2D hitUp = Physics2D.Raycast(transform.position + new Vector3(0, 1, 0), Vector2.down, 3f, raycastMask);
-        RaycastHit2D hitRight = Physics2D.Raycast(transform.position + new Vector3(1, 0, 0), Vector2.down, 3f, raycastMask);
-        RaycastHit2D hitDown = Physics2D.Raycast(transform.position + new Vector3(0, -1, 0), Vector2.down, 3f, raycastMask);
-        RaycastHit2D hitLeft = Physics2D.Raycast(transform.position + new Vector3(-1, 0, 0), Vector2.down, 3f, raycastMask);
+        RaycastHit2D hitUp = Physics2D.Raycast(transform.position + new Vector3(1, 0, 0), Vector2.down, 3f, raycastMask);
+        RaycastHit2D hitRight = Physics2D.Raycast(transform.position + new Vector3(0, 1, 0), Vector2.down, 3f, raycastMask);
+        RaycastHit2D hitDown = Physics2D.Raycast(transform.position + new Vector3(-1, 0, 0), Vector2.down, 3f, raycastMask);
+        RaycastHit2D hitLeft = Physics2D.Raycast(transform.position + new Vector3(0, -1, 0), Vector2.down, 3f, raycastMask);
 
         List<Vector3?> hitPositions = new List<Vector3?>();
 
@@ -29,7 +29,7 @@ public class MoveDetection : MonoBehaviour
         {
             if (hit.collider != null && hit.collider.CompareTag("FreeTile"))
             {
-                //Debug.Log($"[{direction}] Object name [{hit.transform.name}] with Tag [{hit.transform.tag}]");
+                Debug.Log($"from [{this.name}] [{direction}] Object name [{hit.transform.name}] with Tag [{hit.transform.tag}]");
                 hitPositions.Add(hit.transform.position);
             }
             else
@@ -39,10 +39,10 @@ public class MoveDetection : MonoBehaviour
         }
 
         // Process each direction
-        TryAddHit(hitUp, "Up");
-        TryAddHit(hitRight, "Right");
-        TryAddHit(hitDown, "Down");
-        TryAddHit(hitLeft, "Left");
+        TryAddHit(hitUp, "Right");
+        TryAddHit(hitRight, "Up");
+        TryAddHit(hitDown, "Left");
+        TryAddHit(hitLeft, "Down");
 
         //Debug.Log(hitPositions);
         return hitPositions;
