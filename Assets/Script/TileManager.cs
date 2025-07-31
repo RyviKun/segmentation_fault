@@ -25,6 +25,7 @@ public class TileManager : MonoBehaviour
                 test = !test;
                 var spawnedTile = Instantiate(_tilePrefab, new Vector2(x, y), Quaternion.identity);
                 spawnedTile.GetComponent<SpriteRenderer>().color = test ?Color.white : Color.gray;
+                spawnedTile.name = "Tile (" + x + "," + y + ")"; 
                 _gridConfig.ParseLayout();
                 TileData current = _gridConfig.layout[count];
                 if (current is WallTile)
@@ -42,7 +43,7 @@ public class TileManager : MonoBehaviour
                 {
                     var enemyObj = Instantiate(_enemyPrefab, new Vector2(x, y), ParseRotation(enemyTile.direction));
                     Debug.Log("Rotation " + enemyTile.direction);
-                    enemyObj.GetComponent<CircleCollider2D>().radius = enemyTile.range;
+                    enemyObj.GetComponent<EntityMove>().SetEnemyRoute(enemyTile.route);
                 }
                 count++;
             }
@@ -63,10 +64,10 @@ public class TileManager : MonoBehaviour
     {
         switch (direction)
         {
-            case 0: return Quaternion.Euler(0, 0, 0);      // Up
-            case 1: return Quaternion.Euler(0, 0, -90);    // Right
-            case 2: return Quaternion.Euler(0, 0, 180);    // Down
-            case 3: return Quaternion.Euler(0, 0, 90);     // Left
+            case 0: return Quaternion.Euler(0, 0, 0);      // Right
+            case 1: return Quaternion.Euler(0, 0, 90);    // Up
+            case 2: return Quaternion.Euler(0, 0, 180);    // Left
+            case 3: return Quaternion.Euler(0, 0, 270);     // Down
             default:
                 Debug.LogWarning("Invalid direction: " + direction);
                 return Quaternion.identity;

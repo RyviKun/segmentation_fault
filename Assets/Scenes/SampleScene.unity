@@ -505,6 +505,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ccf0a1bc99fa24a4a8cd91a062512bcd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  raycastMask:
+    serializedVersion: 2
+    m_Bits: 119
 --- !u!58 &1123907810
 CircleCollider2D:
   m_ObjectHideFlags: 0
