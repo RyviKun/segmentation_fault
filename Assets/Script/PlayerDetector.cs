@@ -52,11 +52,11 @@ public class PlayerDetector : MonoBehaviour
                 if (hit.collider != null && seenColliders.Add(hit.collider))
                 {
                     //Debug.Log("Found object : " + hit.collider.name
-                        tileList.Add(hit);
-                        if (hit.collider.CompareTag("Player"))
-                        {
+                    tileList.Add(hit);
+                    if (hit.collider.CompareTag("Player"))
+                    {
                         _playerPositionTemp = hit.collider.transform;
-                        }
+                    }
 
                 }
                 

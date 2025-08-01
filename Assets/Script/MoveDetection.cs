@@ -54,7 +54,7 @@ public class MoveDetection : MonoBehaviour
 
     public void GetItemCheck()
     {
-        RaycastHit2D hitCenter = Physics2D.Raycast(transform.position + new Vector3(0, 0, 0), Vector2.down, 3f, raycastMask);
+        RaycastHit2D hitCenter = Physics2D.Raycast(transform.position + new Vector3(0, 0, 0), Vector2.down, 3f);
         if (hitCenter.collider.CompareTag("Item"))
         {
             Destroy(hitCenter.collider.gameObject);
