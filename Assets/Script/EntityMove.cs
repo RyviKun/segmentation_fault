@@ -7,6 +7,7 @@ using static UnityEngine.GraphicsBuffer;
 [RequireComponent (typeof(MoveDetection))]
 public class EntityMove : MonoBehaviour
 {
+    [SerializeField] private ItemData _itemData;
     private MoveDetection _moveDetection;
     private List<int> _route = new();
     private int _routeIndex = 0;
@@ -39,7 +40,7 @@ public class EntityMove : MonoBehaviour
             this.transform.rotation = ParseRotation(moveDirection);
             _routeIndex++;
         }
-        else if (_isChasing)
+        else if (_isChasing && !_itemData.GetItemStatus())
         {
             Debug.Log("chasing");
             Transform? currentPlayerPosition = _playerDetector.GetPlayerTransform();
