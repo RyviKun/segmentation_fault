@@ -23,4 +23,12 @@ public class MainMenu : MonoBehaviour
         }
         Application.Quit();
     }
+
+    public void BackToMainMenu()
+    {
+        Debug.Log("Clicked");
+        //SceneManager
+        mainMenu.SetActive(true);
+        levelSelector.SetActive(false);
+    }
 }
