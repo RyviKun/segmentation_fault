@@ -2,14 +2,13 @@
 - Project name: segmentation_fault
 - Unity version: Unity 6000.0.53f1
 - Active scene:
-  - Name: SampleScene
+  - Name: MainMenu
   - Tags:
     - Untagged, Respawn, Finish, EditorOnly, MainCamera, Player, GameController, FreeTile
   - Layers:
     - Default, TransparentFX, Ignore Raycast, Water, UI
 - Active game object:
-  - Name: Enemy
+  - Name: Panel
   - Tag: Untagged
-  - Layer: Entity
-
+  - Layer: UI
 <!-- UNITY CODE ASSIST INSTRUCTIONS END -->
