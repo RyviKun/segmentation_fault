@@ -1,12 +1,12 @@
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
-[CreateAssetMenu(fileName = "LevelLoader", menuName = "ScriptableObjects/Scripts/LevelLoader")]
+[CreateAssetMenu(fileName = "LevelLoader", menuName = "ScriptableObjects/LevelLoader")]
 public class LevelLoader : ScriptableObject
 {
     public int level;
 
-    private GridConfig _gridConfig;
+    [SerializeField] private GridConfig _gridConfig;
     public void LoadLevel()
     {
         _gridConfig.width = _gridConfig.levels[level].width;
