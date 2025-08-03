@@ -13,7 +13,7 @@ public class GridConfig : ScriptableObject
         { 1, new LevelData{
             stringLayout =
             @"0, 1, 0, 0,
-            0, 0, 0, 4, 0, 
+            0, 0, 0, 4-2, 0, 
             0, 0, 0, 0, 0,
             0, 0, 0, 0, 0,
             0, 0, 0, 0, 0,
@@ -100,9 +100,7 @@ public class GridConfig : ScriptableObject
 
                     break;
                 case "4":
-                    layout[i] = new ItemTile(0);
-                    // Sengaja di komen, soalnya error pas mau debug WinLose.cs
-                    // layout[i] = new SoundTile(int.Parse(current[1]), int.Parse(current[1]));
+                    layout[i] = new SoundTile(int.Parse(current[1]), int.Parse(current[1]));
 
                     break;
             }
