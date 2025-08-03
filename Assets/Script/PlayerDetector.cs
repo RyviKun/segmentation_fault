@@ -1,26 +1,24 @@
-using NUnit.Framework;
 using System.Collections;
 using System.Collections.Generic;
-using System.Linq;
 using UnityEngine;
-using static UnityEditor.Progress;
-using static UnityEditor.Rendering.CameraUI;
-[RequireComponent (typeof(CircleCollider2D))]
+
+[RequireComponent(typeof(CircleCollider2D))]
 public class PlayerDetector : MonoBehaviour
 {
     [SerializeField] private int _range = 5;
     [SerializeField] private int _fov = 1;
     [SerializeField] private GameObject _dangerTilePrefab;
+
     private CircleCollider2D _circleCollider2D;
+    private bool _isRendering = false;
+    private GameObject _lastPlayersTile = null;
+    private bool _isSeen = false;
+
+    private List<GameObject> _dangerTilePool = new();
     public int initialPoolSize = 20;
-    bool _isRendering = false;
-    private Transform? _playerPosition = null;
 
-
-    private List<GameObject> _dangerTilePool = new ();
     void Start()
     {
-     
         for (int i = 0; i < initialPoolSize; i++)
         {
             GameObject tile = Instantiate(_dangerTilePrefab);
@@ -31,85 +29,102 @@ public class PlayerDetector : MonoBehaviour
 
     private void FixedUpdate()
     {
-        List<RaycastHit2D> tileList = new ();
+        List<RaycastHit2D> tileList = new();
         HashSet<Collider2D> seenColliders = new();
-        Transform? _playerPositionTemp = null;
-        for (int i = _fov * 2 + 1; 0 < i; i--)
+        _isSeen = false; // Reset every frame
+
+        for (int i = 0; i < _fov * 2 + 1; i++)
         {
-
-            float ratio = (float)(i - _fov - 1) / (float)_range;
-            float angle2 = Mathf.Atan(ratio);
-            //Debug.Log("ratio : " + fov + "/" + range + " = " + ratio);
-            //Debug.Log("tan inverse : " + angle2);
+            float ratio = (float)(i - _fov) / _range;
+            float angle = Mathf.Atan(ratio);
             float currentAngle = transform.eulerAngles.z * Mathf.Deg2Rad;
-            Vector2 rotatedDirection2 = new Vector2(Mathf.Cos(angle2 + currentAngle), Mathf.Sin(angle2 + currentAngle));
-            Debug.DrawRay(transform.position, rotatedDirection2 * _range, Color.red);
+            Vector2 rotatedDirection = new Vector2(Mathf.Cos(angle + currentAngle), Mathf.Sin(angle + currentAngle));
 
-            RaycastHit2D[] hits = Physics2D.RaycastAll(transform.position, rotatedDirection2, _range, (1 << LayerMask.NameToLayer("Ground")) | (1 << LayerMask.NameToLayer("Player")));
+            RaycastHit2D wallHit = Physics2D.Raycast(transform.position, rotatedDirection, _range, LayerMask.GetMask("Wall"));
+            float distance = wallHit.collider != null ? Vector2.Distance(wallHit.point, transform.position) : _range;
+
+            RaycastHit2D[] hits = Physics2D.RaycastAll(transform.position, rotatedDirection, distance, LayerMask.GetMask("Ground", "Player"));
+            Debug.DrawRay(transform.position, rotatedDirection * distance, Color.red);
+
             foreach (RaycastHit2D hit in hits)
             {
-               
                 if (hit.collider != null && seenColliders.Add(hit.collider))
                 {
-                    //Debug.Log("Found object : " + hit.collider.name
-                        tileList.Add(hit);
-                        if (hit.collider.CompareTag("Player"))
-                        {
-                        _playerPositionTemp = hit.collider.transform;
-                        }
+                    tileList.Add(hit);
 
+                    if (hit.collider.CompareTag("Player"))
+                    {
+                        _isSeen = true;
+                        _lastPlayersTile = GetTileBeneath(hit.collider.transform.position);
+                        Debug.Log("Found player!");
+                    }
                 }
-                
             }
-
         }
-        //Debug.Log("List contents : " + tileList.Count);
-        //Debug.Log("List contents:");
-        if(!_isRendering) StartCoroutine(RenderDangerTile(tileList));
-        _playerPosition = _playerPositionTemp;
 
+        if (!_isRendering)
+        {
+            StartCoroutine(RenderDangerTile(tileList));
+        }
     }
 
-  IEnumerator RenderDangerTile(List<RaycastHit2D> tileList)
+    GameObject GetTileBeneath(Vector3 worldPosition)
+    {
+        // Cast ray downward to find the tile directly under the player
+        RaycastHit2D hit = Physics2D.Raycast(worldPosition + Vector3.back * 0.5f, Vector3.forward, 1f, LayerMask.GetMask("Ground"));
+        return hit.collider != null ? hit.collider.gameObject : null;
+    }
+
+    IEnumerator RenderDangerTile(List<RaycastHit2D> tileList)
     {
         _isRendering = true;
         List<GameObject> activatedTiles = new();
-        for (int j = 0; j < tileList.Count; j++)
+
+        foreach (var tileHit in tileList)
         {
-            RaycastHit2D curTileList = tileList[j];
-            //Debug.Log($"[{j}] = {curTileList.collider.name}");
             GameObject tile = GetDangerTileFromPool();
-            tile.transform.position = curTileList.transform.position;
+            tile.transform.position = tileHit.collider.transform.position;
             tile.SetActive(true);
             activatedTiles.Add(tile);
-            //Instantiate(_dangerTile, tileList[j].collider.transform.position, Quaternion.identity);
         }
+
         yield return new WaitForSeconds(0.2f);
-        for(int i = activatedTiles.Count; i > 0; i--)
-            activatedTiles[i - 1].SetActive(false);
+
+        foreach (var tile in activatedTiles)
+        {
+            tile.SetActive(false);
+        }
 
         _isRendering = false;
     }
 
     GameObject GetDangerTileFromPool()
     {
-        foreach (GameObject tile in _dangerTilePool)
+        foreach (var tile in _dangerTilePool)
         {
             if (!tile.activeInHierarchy)
-            {
-                return tile; // Found one not in use
-            }
+                return tile;
         }
 
-        // None available, make a new one (optional)
         GameObject newTile = Instantiate(_dangerTilePrefab);
         newTile.SetActive(false);
         _dangerTilePool.Add(newTile);
         return newTile;
     }
 
-    public Transform? GetPlayerTransform()
+    // === Accessors ===
+    public GameObject? GetTile()
     {
-        return _playerPosition;
+        return _lastPlayersTile;
+    }
+
+    public void ClearPlayerTransform()
+    {
+        _lastPlayersTile = null;
+    }
+
+    public bool GetIsSeen()
+    {
+        return _isSeen;
     }
 }

@@ -21,32 +21,28 @@ public class PlayerControlScript : MonoBehaviour
         // Directional movement controls
         if(Input.GetKeyDown(KeyCode.W) || Input.GetKeyDown(KeyCode.D) || Input.GetKeyDown(KeyCode.S) || Input.GetKeyDown(KeyCode.A))
         {
-            List<Vector3?> availabity = _moveDetection.GetPosition();
-            if (Input.GetKeyDown(KeyCode.D) && availabity[0].HasValue)
+            Tile availability = _moveDetection.GetTile().GetComponent<Tile>();
+
+            if (Input.GetKeyDown(KeyCode.D) && availability._tileRight && !availability._tileRight.gameObject.GetComponent<Tile>().isOccupied)
             {
-                transform.position = availabity[0].Value;
+                transform.position = availability._tileRight.transform.position;
                 PlayerEvent.PlayerMoved();
             }
-            else if (Input.GetKeyDown(KeyCode.W) && availabity[1].HasValue)
+            else if (Input.GetKeyDown(KeyCode.W) && availability._tileUp && !availability._tileUp.gameObject.GetComponent<Tile>().isOccupied)
             {
-           
-                transform.position = availabity[1].Value;
+                transform.position = availability._tileUp.transform.position;
                 PlayerEvent.PlayerMoved();
             }
-            else if (Input.GetKeyDown(KeyCode.A) &&  availabity[2].HasValue)
+            else if (Input.GetKeyDown(KeyCode.A) && availability._tileLeft && !availability._tileLeft.gameObject.GetComponent<Tile>().isOccupied)
             {
-                transform.position = availabity[2].Value;
+                transform.position = availability._tileLeft.transform.position;
                 PlayerEvent.PlayerMoved();
             }
-            else if (Input.GetKeyDown(KeyCode.S) && availabity[3].HasValue)
+            else if (Input.GetKeyDown(KeyCode.S) && availability._tileDown && !availability._tileDown.gameObject.GetComponent<Tile>().isOccupied)
             {
-                transform.position = availabity[3].Value;
+                transform.position = availability._tileDown.transform.position;
                 PlayerEvent.PlayerMoved();
             }
         }
-      
-       
-
-    
     }
 }
