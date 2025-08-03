@@ -1,9 +1,47 @@
+using System.Collections.Generic;
 using UnityEngine;
 
 
 [CreateAssetMenu(fileName = "GridConfig", menuName = "ScriptableObjects/GridConfig")]
+
+public class LevelData
+{
+    public string stringLayout;
+    public int width;
+    public int height;
+}
 public class GridConfig : ScriptableObject
 {
+    public Dictionary<int, LevelData> levels = new Dictionary<int, LevelData>()
+    {
+        { 1, new LevelData{
+            stringLayout =
+            @"0, 1, 0, 0,
+            0, 0, 0, 4, 0, 
+            0, 0, 0, 0, 0,
+            0, 0, 0, 0, 0,
+            0, 0, 0, 0, 0,
+            0, 0, 0, 0, 0,
+            0, 0, 0, 0, 0,
+            0, 0, 0, 0, 0,
+            0, 0, 0, 0, 0,
+            0, 0, 0, 0, 0,
+            0, 0, 0, 0, 0,
+            0, 0, 0, 0, 0,
+            0, 0, 0, 0, 0,
+            0, 0, 0, 0, 0,
+            0, 0, 0, 0, 0,
+            0, 0, 0, 0, 0,
+            0, 0, 0, 0, 0,
+            0, 0, 0, 0, 0,
+            0, 0, 0, 0, 0,
+            0, 3-1-3-000111, 
+            0, 0, 0, 0",
+            width = 10,
+            height = 10,
+            }
+        }
+    };
     public int width, height;
     [SerializeField] public TileData[] layout;
     [TextArea]
@@ -22,26 +60,26 @@ public class GridConfig : ScriptableObject
                                   .Replace("\r", "")
                                   .Replace("\t", "");
         string[] splitted = cleaned.Split(',');
-        for (int i = 0; i < splitted.Length ; i++)
+        for (int i = 0; i < splitted.Length; i++)
         {
             string[] current = splitted[i].Split("-");
             switch (current[0])
             {
                 case "0":
                     layout[i] = new EmptyTile(0);
-                
+
                     break;
                 case "1":
                     layout[i] = new SpawnTile(0);
-      
+
                     break;
                 case "2":
                     layout[i] = new WallTile(0);
-         
+
                     break;
                 case "3":
                     layout[i] = new EnemyTile(int.Parse(current[1]), int.Parse(current[2]), current[3]);
-           
+
                     break;
                 case "4":
                     layout[i] = new ItemTile(0);
@@ -51,5 +89,5 @@ public class GridConfig : ScriptableObject
         }
     }
 
-   
+
 }
