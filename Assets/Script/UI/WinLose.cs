@@ -10,24 +10,28 @@ public class WinLose : MonoBehaviour
     public GameObject gameOver;
     [SerializeField] private LevelLoader _levelLoader;
 
-    public void GameWin() 
-    { 
+    public void GameWin()
+    {
         gameWin.SetActive(true);
     }
 
-    public void GameOver() 
-    { 
+    public void GameOver()
+    {
         gameOver.SetActive(true);
     }
 
     public void BackToSelect()
     {
+        gameWin.SetActive(false);
+        gameOver.SetActive(false);
         SceneManager.LoadScene(0);
     }
 
     public void NextLevel()
     {
         _levelLoader.level = _levelLoader.level += 1;
+        gameWin.SetActive(false);
+        gameOver.SetActive(false);
         _levelLoader.LoadLevel();
     }
 }
