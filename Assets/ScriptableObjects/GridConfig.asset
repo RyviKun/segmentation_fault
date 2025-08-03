@@ -1,17 +1,19 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
---- !u!114 &11400000
+---
+!u!114 &11400000
 MonoBehaviour:
   m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
+  m_CorrespondingSourceObject: { fileID: 0 }
+  m_PrefabInstance: { fileID: 0 }
+  m_PrefabAsset: { fileID: 0 }
+  m_GameObject: { fileID: 0 }
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: de1d30fad0b4e664698caa61890ead15, type: 3}
+  m_Script:
+    { fileID: 11500000, guid: de1d30fad0b4e664698caa61890ead15, type: 3 }
   m_Name: GridConfig
-  m_EditorClassIdentifier: 
+  m_EditorClassIdentifier:
   width: 10
   height: 10
   layoutString: "0,\r\n1,\r\n0,\r\n0,\r\n0, 0, 0, 4, 0, \r\n0, 0, 0, 0, 0,\r\n0,
@@ -19,3 +21,8 @@ MonoBehaviour:
     0, 0,\r\n0, 0, 0, 0, 0,\r\n0, 0, 0, 0, 0,\r\n0, 0, 0, 0, 0,\r\n0, 0, 0, 0, 0,\r\n0,
     0, 0, 0, 0,\r\n0, 0, 0, 0, 0,\r\n0, 0, 0, 0, 0,\r\n0, 0, 0, 0, 0,\r\n0, 0, 0,
     0, 0,\r\n0, 0, 0, 0, 0,\r\n0, 0, 0, 0, 0,\r\n0, 0, \r\n0, 0, 0, 0"
+  layoutString: "0,\n0,\n0,\n0,\n0, 0, 0, 1, 0, \n0, 0, 0, 0, 0,\n0, 0, 0, 0, 0,\n0,
+    0, 0, 0, 0,\n0, 0, 0, 0, 0,\n0, 0, 0, 0, 0,\n0, 0, 0, 0, 0,\n0, 0, 0, 0, 0,\n0,
+    0, 0, 0, 0,\n0, 0, 2, 2, 2,\n2, 0, 0, 0, 0,\n0, 0, 0, 0, 0,\n0, 0, 2, 0, 0,\n0,
+    0, 0, 0, 0,\n0, 0, 0, 0, 0,\n0, 0, 0, 0, 0,\n0, 0, 0, 0, 0,\n0, 0, 0, 0, 0,\n0,
+    3-1-3-000111, \n0, 0, 0, 0"

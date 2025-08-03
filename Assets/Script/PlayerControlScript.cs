@@ -21,61 +21,28 @@ public class PlayerControlScript : MonoBehaviour
         // Directional movement controls
         if (Input.GetKeyDown(KeyCode.W) || Input.GetKeyDown(KeyCode.D) || Input.GetKeyDown(KeyCode.S) || Input.GetKeyDown(KeyCode.A))
         {
-            List<Vector3?> availabity = _moveDetection.GetPosition();
-            if (Input.GetKeyDown(KeyCode.D) && availabity[0].HasValue)
-            {
-                Debug.Log("Up");
-                NotifyTimer();
-                transform.position = availabity[0].Value;
-                PlayerEvent.PlayerMoved();
-            }
-            else if (Input.GetKeyDown(KeyCode.W) && availabity[1].HasValue)
-            {
-                Debug.Log("Right");
-                NotifyTimer();
-                transform.position = availabity[1].Value;
-                PlayerEvent.PlayerMoved();
-            }
-            else if (Input.GetKeyDown(KeyCode.A) &&  availabity[2].HasValue)
-            {
-                Debug.Log("Down");
-                NotifyTimer();
-                transform.position = availabity[2].Value;
-                PlayerEvent.PlayerMoved();
-            }
-            else if (Input.GetKeyDown(KeyCode.S) && availabity[3].HasValue)
-            {
-                Debug.Log("Left");
-                NotifyTimer();
-                transform.position = availabity[3].Value;
-                PlayerEvent.PlayerMoved();
-            }
-        }
-        _moveDetection.GetItemCheck();
+            Tile availability = _moveDetection.GetTile().GetComponent<Tile>();
 
-        if (Input.GetKeyDown(KeyCode.Space) && _itemData.GetItemAvailability())
-        {
-            _itemData.ItemUsed();
-        }
-    }
-    public void NotifyTimer()
-    {
-        if (_itemData.GetItemStatus())
-        {
-            if (_itemData.GetEffectTimer() > 0)
+            if (Input.GetKeyDown(KeyCode.D) && availability._tileRight && !availability._tileRight.gameObject.GetComponent<Tile>().isOccupied)
             {
-                _itemData.CountDownTimer();
-                Debug.Log("Item in effect!\nTimer :" + _itemData.GetEffectTimer());
+                transform.position = availability._tileRight.transform.position;
+                PlayerEvent.PlayerMoved();
             }
-            else
+            else if (Input.GetKeyDown(KeyCode.W) && availability._tileUp && !availability._tileUp.gameObject.GetComponent<Tile>().isOccupied)
             {
-                _itemData.ItemEffectOff();
-                Debug.Log("Item effect wore off!");
+                transform.position = availability._tileUp.transform.position;
+                PlayerEvent.PlayerMoved();
             }
-        }
-        else
-        {
-            Debug.Log("Item not in effect");
+            else if (Input.GetKeyDown(KeyCode.A) && availability._tileLeft && !availability._tileLeft.gameObject.GetComponent<Tile>().isOccupied)
+            {
+                transform.position = availability._tileLeft.transform.position;
+                PlayerEvent.PlayerMoved();
+            }
+            else if (Input.GetKeyDown(KeyCode.S) && availability._tileDown && !availability._tileDown.gameObject.GetComponent<Tile>().isOccupied)
+            {
+                transform.position = availability._tileDown.transform.position;
+                PlayerEvent.PlayerMoved();
+            }
         }
     }
 }

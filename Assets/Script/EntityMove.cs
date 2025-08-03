@@ -1,94 +1,194 @@
-using NUnit.Framework;
+﻿using NUnit.Framework;
 using System.Collections.Generic;
-using Unity.VisualScripting;
+using System.Linq;
 using UnityEngine;
-using static UnityEngine.GraphicsBuffer;
 
-[RequireComponent (typeof(MoveDetection))]
+[RequireComponent(typeof(MoveDetection))]
 public class EntityMove : MonoBehaviour
 {
     [SerializeField] private ItemData _itemData;
     private MoveDetection _moveDetection;
+    private PlayerDetector _playerDetector;
+
     private List<int> _route = new();
     private int _routeIndex = 0;
+    private Transform _lastTile = null;
     private bool _isChasing = false;
-    private PlayerDetector _playerDetector;
+
     void Awake()
     {
         PlayerEvent.OnPlayerMoved += Listener;
     }
+
     void Start()
     {
         _moveDetection = GetComponent<MoveDetection>();
-        _playerDetector = GetComponent<PlayerDetector>(); 
-    }
-
-    private void Update()
-    {
-        //Debug.Log(_playerDetector.GetPlayerPosition());
+        _playerDetector = GetComponent<PlayerDetector>();
     }
 
     void Listener()
     {
-        if (_playerDetector.GetPlayerTransform() != null) _isChasing = true;
-        if (!_isChasing)
+        GameObject startTile = _moveDetection.GetTile();
+        GameObject goalTile = _playerDetector.GetTile();
+
+        if (_playerDetector.GetIsSeen())
         {
-            Debug.Log("route Index : " + _routeIndex);
-            Debug.Log("current Route " + _route[_routeIndex]);
-            int moveDirection = _route[_routeIndex];
-            this.transform.position = _moveDetection.GetPosition()[moveDirection].Value;
-            this.transform.rotation = ParseRotation(moveDirection);
-            _routeIndex++;
+            _isChasing = true;
         }
-        else if (_isChasing && !_itemData.GetItemStatus())
+
+        // === CHASING MODE ===
+        if (_isChasing)
         {
-            Debug.Log("chasing");
-            Transform? currentPlayerPosition = _playerDetector.GetPlayerTransform();
-            Vector2 finalPosition = transform.position;
-            Vector2[] directions = { Vector2.right, Vector2.up, Vector2.left, Vector2.down };
-            float shortestDistance = float.MaxValue;
-
-            foreach (Vector2 dir in directions)
+            if (goalTile == null)
             {
-                Vector2 candidatePosition = (Vector2)transform.position + dir;
-                float distance = Vector2.Distance(candidatePosition, currentPlayerPosition.position);
+                if (_lastTile == null) return;
+                goalTile = _lastTile.gameObject;
+            }
+            else
+            {
+                _lastTile = goalTile.transform;
+            }
 
-                if (distance < shortestDistance)
+            Dictionary<GameObject, NodeData> open = new();
+            Dictionary<GameObject, NodeData> closed = new();
+
+            NodeData startNode = new()
+            {
+                tile = startTile,
+                gCost = 0f,
+                hCost = Vector2.Distance(startTile.transform.position, goalTile.transform.position),
+                parent = null
+            };
+            open[startTile] = startNode;
+
+            while (open.Count > 0)
+            {
+                var current = open.OrderBy(n => n.Value.fCost).First();
+
+                if (current.Key == goalTile)
                 {
-                    shortestDistance = distance;
-                    finalPosition = candidatePosition;
+                    closed[current.Key] = current.Value;
+                    break;
+                }
+
+                open.Remove(current.Key);
+                closed[current.Key] = current.Value;
+
+                GameObject[] neighbors = current.Key.GetComponent<Tile>().GetAllDirection();
+                foreach (GameObject neighbor in neighbors)
+                {
+                    if (neighbor == null || closed.ContainsKey(neighbor)) continue;
+
+                    Tile neighborTile = neighbor.GetComponent<Tile>();
+                    if (neighborTile != null && neighborTile.isOccupied) continue;
+
+                    float tentativeG = current.Value.gCost + 1;
+
+                    if (!open.ContainsKey(neighbor) || tentativeG < open[neighbor].gCost)
+                    {
+                        NodeData newNode = new()
+                        {
+                            tile = neighbor,
+                            gCost = tentativeG,
+                            hCost = Vector2.Distance(neighbor.transform.position, goalTile.transform.position),
+                            parent = current.Value
+                        };
+                        open[neighbor] = newNode;
+                    }
                 }
             }
-            transform.position = finalPosition;
-            Vector2 direction = currentPlayerPosition.position - transform.position;
-            float angle = Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg;
-            transform.rotation = Quaternion.Euler(0f, 0f, angle);
+
+            if (!closed.ContainsKey(goalTile))
+            {
+                _isChasing = false;
+                return;
+            }
+
+            List<GameObject> path = new();
+            NodeData node = closed[goalTile];
+            while (node != null)
+            {
+                path.Add(node.tile);
+                node = node.parent;
+            }
+            path.Reverse();
+
+            if (path.Count > 1)
+            {
+                Vector2 toPlayerDir = _lastTile.position - transform.position;
+                transform.position = path[1].transform.position;
+
+                float angle = Mathf.Atan2(toPlayerDir.y, toPlayerDir.x) * Mathf.Rad2Deg;
+                transform.rotation = Quaternion.Euler(0f, 0f, angle);
+            }
+            else
+            {
+                _isChasing = false;
+            }
+        }
+
+        // === PATROLLING MODE ===
+        else
+        {
+            if (_route.Count == 0) return;
+
+            int moveDirection = _route[_routeIndex];
+            GameObject currentTile = _moveDetection.GetTile();
+            Tile tile = currentTile.GetComponent<Tile>();
+
+            GameObject targetTile = moveDirection switch
+            {
+                0 => tile._tileRight,
+                1 => tile._tileUp,
+                2 => tile._tileLeft,
+                3 => tile._tileDown,
+                _ => null
+            };
+
+            if (targetTile != null && !targetTile.GetComponent<Tile>().isOccupied)
+            {
+                Vector2 dir = targetTile.transform.position - transform.position;
+                transform.position = targetTile.transform.position;
+                float angle = Mathf.Atan2(dir.y, dir.x) * Mathf.Rad2Deg;
+                transform.rotation = Quaternion.Euler(0, 0, angle);
+            }
+
+            _routeIndex++;
+            if (_routeIndex >= _route.Count)
+            {
+                _route.Reverse();
+                _routeIndex = 0;
+            }
         }
     }
-    
+
     public void SetEnemyRoute(string route)
     {
-        
+        _route.Clear();
         for (int i = 0; i < route.Length; i++)
         {
-            
             _route.Add((int)char.GetNumericValue(route[i]));
-           
         }
-  
     }
 
     public static Quaternion ParseRotation(int direction)
     {
-        switch (direction)
+        return direction switch
         {
-            case 0: return Quaternion.Euler(0, 0, 0);      // Right
-            case 1: return Quaternion.Euler(0, 0, 90);    // Up
-            case 2: return Quaternion.Euler(0, 0, 180);    // Left
-            case 3: return Quaternion.Euler(0, 0, 270);     // Down
-            default:
-                Debug.LogWarning("Invalid direction: " + direction);
-                return Quaternion.identity;
-        }
+            0 => Quaternion.Euler(0, 0, 0),     // Right
+            1 => Quaternion.Euler(0, 0, 90),    // Up
+            2 => Quaternion.Euler(0, 0, 180),   // Left
+            3 => Quaternion.Euler(0, 0, 270),   // Down
+            _ => Quaternion.identity
+        };
     }
-} 
+
+    public class NodeData
+    {
+        public GameObject tile;
+        public float gCost;
+        public float hCost;
+        public float fCost => gCost + hCost;
+        public NodeData parent;
+    }
+}

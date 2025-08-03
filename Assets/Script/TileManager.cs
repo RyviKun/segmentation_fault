@@ -2,12 +2,12 @@ using System;
 using UnityEngine;
 using UnityEngine.Rendering;
 using static UnityEngine.Rendering.STP;
-
+using System.Collections.Generic;
 
 public class TileManager : MonoBehaviour
 {
     [SerializeField] private GridConfig _gridConfig;
-    [SerializeField] private Tile _tilePrefab;
+    [SerializeField] private GameObject _tilePrefab;
     [SerializeField] private Tile _wallPrefab;
     [SerializeField] private GameObject _spawnPointPrefab;
     [SerializeField] private GameObject _enemyPrefab;
@@ -18,20 +18,30 @@ public class TileManager : MonoBehaviour
         PlayerEvent.OnPlayerMoved += PrintOut;
         bool isBlocked = true; 
         int count = 0;
+        _gridConfig.ParseLayout();
+        TileData[] layout = _gridConfig.layout;
+        List<GameObject> spawnedTileList = new();
+        LayerMask raycastMask = LayerMask.GetMask("Ground");
+
         for (int y = _gridConfig.height ; y > 0  ; y--)
         {
             bool test = isBlocked;
             for (int x = 0; x < _gridConfig.width; x++)
             {
                 test = !test;
-                var spawnedTile = Instantiate(_tilePrefab, new Vector2(x, y), Quaternion.identity);
+                GameObject spawnedTile = Instantiate(_tilePrefab, new Vector3(x, y, 1), Quaternion.identity);
+                Tile spawnedTile_tileScript = spawnedTile.GetComponent<Tile>();
                 spawnedTile.GetComponent<SpriteRenderer>().color = test ?Color.white : Color.gray;
                 spawnedTile.name = "Tile (" + x + "," + y + ")"; 
-                _gridConfig.ParseLayout();
-                TileData current = _gridConfig.layout[count];
+                
+                TileData current = layout[count];
+                spawnedTileList.Add(spawnedTile);
+
                 if (current is WallTile)
                 {
                     Instantiate(_wallPrefab, new Vector2(x, y), Quaternion.identity);
+                    spawnedTile_tileScript.isOccupied = true;
+                    
                 }
 
                 if (current is SpawnTile)
@@ -52,9 +62,42 @@ public class TileManager : MonoBehaviour
                     Instantiate(_itemPrefab, new Vector2(x, y), Quaternion.identity);
                 }
                 count++;
+                
             }
             isBlocked = !isBlocked;
         }
+
+        foreach (GameObject spawnedTile in spawnedTileList)
+        {
+            Vector3 currentTilePosition = spawnedTile.transform.position;
+            Tile tileComponent = spawnedTile.GetComponent<Tile>();
+            RaycastHit2D hitRight = Physics2D.Raycast(currentTilePosition + new Vector3(1, 0, 0), Vector3.back, 3f, raycastMask);
+            RaycastHit2D hitUp = Physics2D.Raycast(currentTilePosition + new Vector3(0, 1, 0), Vector3.back, 3f, raycastMask);
+            RaycastHit2D hitLeft = Physics2D.Raycast(currentTilePosition + new Vector3(-1, 0, 0), Vector3.back, 3f, raycastMask);
+            RaycastHit2D hitDown = Physics2D.Raycast(currentTilePosition + new Vector3(0, -1, 0), Vector3.back, 3f, raycastMask);
+            
+
+            if (hitRight.collider != null)
+            {
+                tileComponent._tileRight = hitRight.collider.gameObject;
+            }
+            if (hitUp.collider != null)
+            {
+                tileComponent._tileUp = hitUp.collider.gameObject;
+            }
+            if (hitLeft.collider != null)
+            {
+                tileComponent._tileLeft = hitLeft.collider.gameObject;
+            }
+            if (hitDown.collider != null)
+            {
+                tileComponent._tileDown = hitDown.collider.gameObject;
+            }
+
+        }
+
+
+
     }
 
     public void PrintOut()
