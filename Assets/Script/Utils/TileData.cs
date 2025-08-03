@@ -30,9 +30,14 @@ public class EnemyTile : TileData
 {
     public string route;
     public int range;
-    public EnemyTile(int direction, string route, int range) : base(direction)
+    public EnemyTile(int direction, int range, string route) : base(direction)
     {
         this.route = route;
         this.range = range;
     }
+}
+
+public class ItemTile : TileData
+{
+    public ItemTile(int direction) : base(direction) { }
 }

@@ -5,15 +5,16 @@ TagManager:
   serializedVersion: 3
   tags:
   - FreeTile
+  - Item
   layers:
   - Default
   - TransparentFX
   - Ignore Raycast
-  - 
+  - Entity
   - Water
   - UI
-  - 
-  - 
+  - Ground
+  - Player
   - 
   - 
   - 
