@@ -37,7 +37,7 @@ public class EntityMove : MonoBehaviour
         }
 
         // === CHASING MODE ===
-        if (_isChasing)
+        if (_isChasing && !_itemData.GetItemStatus())
         {
             if (goalTile == null)
             {
