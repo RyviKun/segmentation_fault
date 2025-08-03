@@ -36,3 +36,8 @@ public class EnemyTile : TileData
         this.range = range;
     }
 }
+
+public class ItemTile : TileData
+{
+    public ItemTile(int direction) : base(direction) { }
+}

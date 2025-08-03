@@ -5,6 +5,7 @@ using System.Collections.Generic;
 public class PlayerControlScript : MonoBehaviour
 {
     [SerializeField] private TileManager _tileManager;
+    [SerializeField] private ItemData _itemData;
     private MoveDetection _moveDetection;
     void Awake()
     {
@@ -17,9 +18,8 @@ public class PlayerControlScript : MonoBehaviour
 
     void Update()
     {
-
         // Directional movement controls
-        if(Input.GetKeyDown(KeyCode.W) || Input.GetKeyDown(KeyCode.D) || Input.GetKeyDown(KeyCode.S) || Input.GetKeyDown(KeyCode.A))
+        if (Input.GetKeyDown(KeyCode.W) || Input.GetKeyDown(KeyCode.D) || Input.GetKeyDown(KeyCode.S) || Input.GetKeyDown(KeyCode.A))
         {
             Tile availability = _moveDetection.GetTile().GetComponent<Tile>();
 

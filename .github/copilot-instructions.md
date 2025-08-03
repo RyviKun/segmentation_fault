@@ -1,8 +1,9 @@
 <!-- UNITY CODE ASSIST INSTRUCTIONS START -->
+
 - Project name: segmentation_fault
 - Unity version: Unity 6000.0.53f1
 - Active game object:
-  - Name: Enemy
+  - Name: Level1 Box
   - Tag: Untagged
   - Layer: Entity
-<!-- UNITY CODE ASSIST INSTRUCTIONS END -->
+  <!-- UNITY CODE ASSIST INSTRUCTIONS END -->

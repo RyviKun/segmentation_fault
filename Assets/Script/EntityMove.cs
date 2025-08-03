@@ -6,6 +6,7 @@ using UnityEngine;
 [RequireComponent(typeof(MoveDetection))]
 public class EntityMove : MonoBehaviour
 {
+    [SerializeField] private ItemData _itemData;
     private MoveDetection _moveDetection;
     private PlayerDetector _playerDetector;
 
