@@ -4,13 +4,9 @@ using UnityEngine;
 
 [CreateAssetMenu(fileName = "GridConfig", menuName = "ScriptableObjects/GridConfig")]
 
-public class LevelData
-{
-    public string stringLayout;
-    public int width;
-    public int height;
-}
+
 public class GridConfig : ScriptableObject
+
 {
     public Dictionary<int, LevelData> levels = new Dictionary<int, LevelData>()
     {

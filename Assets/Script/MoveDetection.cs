@@ -5,7 +5,7 @@ using UnityEngine;
 public class MoveDetection : MonoBehaviour
 {
     public LayerMask raycastMask;
-
+    [SerializeField] private ItemData _itemData;
 
     private void Start()
     {
@@ -14,7 +14,7 @@ public class MoveDetection : MonoBehaviour
     private void FixedUpdate()
     {
         Debug.DrawRay(transform.position + new Vector3(0, 0, 3f), Vector3.back * 4, Color.white);
-
+        GetItemCheck();
     }
     public GameObject GetTile()
     {
