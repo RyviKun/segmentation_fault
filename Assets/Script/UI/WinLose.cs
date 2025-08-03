@@ -9,7 +9,7 @@ public class WinLose : MonoBehaviour
     public GameObject gameWin;
     public GameObject gameOver;
     [SerializeField] private LevelLoader _levelLoader;
-
+    [SerializeField] private GameObject nextLvlButton;
     public void GameWin()
     {
         gameWin.SetActive(true);
@@ -39,13 +39,13 @@ public class WinLose : MonoBehaviour
         else
         {
             // Sudah di level maksimal, biarkan gameWin tetap menyala
+            Destroy(nextLvlButton);
             Debug.Log("Sudah mencapai level terakhir.");
         }
     }
 
     public void Retry()
     {
-        _levelLoader.level = _levelLoader.level;
         gameWin.SetActive(false);
         gameOver.SetActive(false);
         _levelLoader.LoadLevel();
