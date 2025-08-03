@@ -90,7 +90,7 @@ public class GridConfig : ScriptableObject
 
                     break;
                 case "4":
-                    layout[i] = new ItemTile(0);
+                    layout[i] = new SoundTile(int.Parse(current[1]), int.Parse(current[1]));
 
                     break;
             }
