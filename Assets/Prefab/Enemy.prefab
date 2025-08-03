@@ -152,6 +152,7 @@ MonoBehaviour:
   raycastMask:
     serializedVersion: 2
     m_Bits: 375
+  _itemData: {fileID: 0}
 --- !u!58 &4279379755743313363
 CircleCollider2D:
   m_ObjectHideFlags: 0
@@ -203,6 +204,7 @@ MonoBehaviour:
   _range: 5
   _fov: 1
   _dangerTilePrefab: {fileID: 1807378046668182583, guid: db32bd232e0fb924497dbefd32b41838, type: 3}
+  _itemData: {fileID: 11400000, guid: d85fb08e4fc1ebf43b0ee77300f60a29, type: 2}
   initialPoolSize: 20
 --- !u!1 &4726808798742037164
 GameObject:
