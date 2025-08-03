@@ -169,6 +169,7 @@ MonoBehaviour:
   _spawnPointPrefab: {fileID: 647558575535055905, guid: f9338e100a5f9374483951e830ed3f67, type: 3}
   _enemyPrefab: {fileID: 4556889829667805991, guid: 83d37a761904d6248a453e0e0021944a, type: 3}
   _itemPrefab: {fileID: 4290027834419517038, guid: 4720a88eb16c3214cad51ebfe14f4c4a, type: 3}
+  _soundDetectorPrefab: {fileID: 2904022514979501198, guid: 4d209f6ba1cda294db2a1c7f78f1c40a, type: 3}
 --- !u!1 &519420028
 GameObject:
   m_ObjectHideFlags: 0

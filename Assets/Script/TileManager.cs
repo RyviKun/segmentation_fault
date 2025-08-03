@@ -12,6 +12,7 @@ public class TileManager : MonoBehaviour
     [SerializeField] private GameObject _spawnPointPrefab;
     [SerializeField] private GameObject _enemyPrefab;
     [SerializeField] private GameObject _itemPrefab;
+    [SerializeField] private GameObject _soundDetectorPrefab;
     private Vector2 spawnPoint;
     void Awake()
     {
@@ -60,6 +61,12 @@ public class TileManager : MonoBehaviour
                 if (current is ItemTile)
                 {
                     Instantiate(_itemPrefab, new Vector2(x, y), Quaternion.identity);
+                }
+
+                if (current is SoundTile soundTile)
+                {
+                    var soundObj = Instantiate(_soundDetectorPrefab, new Vector2(x, y), ParseRotation(soundTile.direction));
+                    soundObj.GetComponent<SoundDetector>().SetRange(soundTile.range);
                 }
                 count++;
                 

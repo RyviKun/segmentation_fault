@@ -37,6 +37,15 @@ public class EnemyTile : TileData
     }
 }
 
+public class SoundTile : TileData
+{
+    public int range;
+    public SoundTile(int direction, int range) : base(direction)
+    {
+        this.range = range;
+    }
+}
+
 public class ItemTile : TileData
 {
     public ItemTile(int direction) : base(direction) { }
