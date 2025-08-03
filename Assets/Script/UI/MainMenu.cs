@@ -9,12 +9,16 @@ public class MainMenu : MonoBehaviour
     public GameObject levelSelector;
     public GameObject levelPreview;
     public GameObject credit;
+    [SerializeField] private LevelLoader _levelLoader;
+    public void PlayButton()
+    {
+        mainMenu.SetActive(false);
+        levelSelector.SetActive(true);
+    }
     public void PlayGame()
     {
         Debug.Log("its been clicked");
-        // SceneManager.LoadSceneAsync(1);
-        mainMenu.SetActive(false);
-        levelSelector.SetActive(true);
+        _levelLoader.LoadLevel();
     }
 
     public void Credit()
@@ -41,8 +45,9 @@ public class MainMenu : MonoBehaviour
         credit.SetActive(false);
     }
 
-    public void SelectLevel()
+    public void SelectLevel(int level)
     {
+        _levelLoader.level = level;
         levelPreview.SetActive(true);
         levelSelector.SetActive(false);
     }
