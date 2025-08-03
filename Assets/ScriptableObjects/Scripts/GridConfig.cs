@@ -47,6 +47,17 @@ public class GridConfig : ScriptableObject
             width = 5,
             height = 5
             }
+        },
+        { 3, new LevelData{
+            stringLayout =
+            @"0, 0, 0, 0, 0,
+            0, 1, 0, 0, 0,
+            0, 0, 0, 0, 0,
+            0, 0, 0, 0, 0,
+            0, 0, 0, 0, 0",
+            width = 5,
+            height = 5
+            }
         }
     };
     public int width, height;

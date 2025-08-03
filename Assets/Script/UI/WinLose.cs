@@ -29,7 +29,23 @@ public class WinLose : MonoBehaviour
 
     public void NextLevel()
     {
-        _levelLoader.level = _levelLoader.level += 1;
+        if (_levelLoader.level < 3)
+        {
+            _levelLoader.level += 1;
+            gameWin.SetActive(false);
+            gameOver.SetActive(false);
+            _levelLoader.LoadLevel();
+        }
+        else
+        {
+            // Sudah di level maksimal, biarkan gameWin tetap menyala
+            Debug.Log("Sudah mencapai level terakhir.");
+        }
+    }
+
+    public void Retry()
+    {
+        _levelLoader.level = _levelLoader.level;
         gameWin.SetActive(false);
         gameOver.SetActive(false);
         _levelLoader.LoadLevel();
