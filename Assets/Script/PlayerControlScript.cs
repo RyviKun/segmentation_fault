@@ -6,6 +6,7 @@ public class PlayerControlScript : MonoBehaviour
 {
     [SerializeField] private TileManager _tileManager;
     [SerializeField] private ItemData _itemData;
+    [SerializeField] private WinLose _winLose;
     private MoveDetection _moveDetection;
     void Awake()
     {
@@ -21,7 +22,7 @@ public class PlayerControlScript : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.W) || Input.GetKeyDown(KeyCode.D) || Input.GetKeyDown(KeyCode.S) || Input.GetKeyDown(KeyCode.A))
         {
             Tile availability = _moveDetection.GetTile().GetComponent<Tile>();
-
+            
             if (Input.GetKeyDown(KeyCode.D) && availability._tileRight && !availability._tileRight.gameObject.GetComponent<Tile>().isOccupied)
             {
                 if (_itemData.GetItemStatus() && _itemData.GetEffectTimer() > 0)
@@ -73,6 +74,13 @@ public class PlayerControlScript : MonoBehaviour
                 }
                 transform.position = availability._tileDown.transform.position;
                 PlayerEvent.PlayerMoved();
+            }
+            GameObject currentTile = _moveDetection.GetTile();
+            Debug.Log("current Tile : " + currentTile.name);
+            if (currentTile != null && currentTile.CompareTag("GoalTile"))
+            {
+                Debug.Log("Win!");
+                _winLose.GameWin();
             }
         }
 

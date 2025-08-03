@@ -245,6 +245,8 @@ MonoBehaviour:
   _enemyPrefab: {fileID: 4556889829667805991, guid: 83d37a761904d6248a453e0e0021944a, type: 3}
   _itemPrefab: {fileID: 4290027834419517038, guid: 4720a88eb16c3214cad51ebfe14f4c4a, type: 3}
   _soundDetectorPrefab: {fileID: 2904022514979501198, guid: 4d209f6ba1cda294db2a1c7f78f1c40a, type: 3}
+  _goalTilePrefab: {fileID: 7485205806617932446, guid: b0bd6f331741658479199edd13fae9a2, type: 3}
+  _winLose: {fileID: 1187543235}
 --- !u!1 &473012371
 GameObject:
   m_ObjectHideFlags: 0
@@ -1242,6 +1244,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _tileManager: {fileID: 368271890}
   _itemData: {fileID: 11400000, guid: d85fb08e4fc1ebf43b0ee77300f60a29, type: 2}
+  _winLose: {fileID: 1187543235}
 --- !u!114 &1123907808
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1440,6 +1443,7 @@ MonoBehaviour:
   gameWin: {fileID: 2054765636}
   gameOver: {fileID: 862646773}
   _levelLoader: {fileID: 11400000, guid: 271395b7b73a57d43a3c9e4148646a98, type: 2}
+  nextLvlButton: {fileID: 473012371}
 --- !u!1 &1293887853
 GameObject:
   m_ObjectHideFlags: 0
