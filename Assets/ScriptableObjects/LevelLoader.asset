@@ -13,4 +13,4 @@ MonoBehaviour:
   m_Name: LevelLoader
   m_EditorClassIdentifier: 
   level: 1
-  _gridConfig: {fileID: 11400000, guid: e1c1b8c2dc0bc624e95ce3fba497d2ec, type: 2}
+  _gridConfig: {fileID: 11400000, guid: 4e84c7973c78d8946a6107fe54f3861d, type: 2}
