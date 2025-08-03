@@ -12,5 +12,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: db608f63584790f4793c183445eacdba, type: 3}
   m_Name: LevelLoader
   m_EditorClassIdentifier: 
-  level: 1
+  level: 2
   _gridConfig: {fileID: 11400000, guid: 4e84c7973c78d8946a6107fe54f3861d, type: 2}

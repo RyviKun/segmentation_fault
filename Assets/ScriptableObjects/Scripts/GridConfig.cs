@@ -13,7 +13,7 @@ public class GridConfig : ScriptableObject
         { 1, new LevelData{
             stringLayout =
             @"0, 1, 0, 0,
-            0, 0, 0, 4, 0, 
+            0, 0, 0, 4-2, 0, 
             0, 0, 0, 0, 0,
             0, 0, 0, 0, 0,
             0, 0, 0, 0, 0,
@@ -39,12 +39,22 @@ public class GridConfig : ScriptableObject
         },
         { 2, new LevelData{
             stringLayout =
-            @"1, 0, 0, 0,
+            @"0, 0, 0, 0, 0,
+            0, 1, 0, 0, 0,
             0, 0, 0, 0, 0,
             0, 0, 0, 0, 0,
-            0, 0, 0, 3-1, 0,
+            0, 0, 0, 0, 0",
+            width = 5,
+            height = 5
+            }
+        },
+        { 3, new LevelData{
+            stringLayout =
+            @"0, 0, 0, 0, 0,
+            0, 1, 0, 0, 0,
             0, 0, 0, 0, 0,
-            0",
+            0, 0, 0, 0, 0,
+            0, 0, 0, 0, 0",
             width = 5,
             height = 5
             }

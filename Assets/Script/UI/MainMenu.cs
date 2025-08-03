@@ -12,7 +12,7 @@ public class MainMenu : MonoBehaviour
     public GameObject credit;
     public GameObject controls;
     public GameObject itemPanel1;
-    public GameObject itemPanel2;       
+    public GameObject itemPanel2;
     [SerializeField] private LevelLoader _levelLoader;
     public void PlayButton()
     {
@@ -83,4 +83,5 @@ public class MainMenu : MonoBehaviour
             itemPanel2.GetComponent<Outline>().enabled = true;
         }
     }
+
 }
