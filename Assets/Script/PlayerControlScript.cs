@@ -15,7 +15,6 @@ public class PlayerControlScript : MonoBehaviour
     {
         transform.position = new Vector3(_tileManager.GetSpawnPoint().x, _tileManager.GetSpawnPoint().y, -0.001f);
     }
-
     void Update()
     {
         // Directional movement controls
@@ -25,23 +24,63 @@ public class PlayerControlScript : MonoBehaviour
 
             if (Input.GetKeyDown(KeyCode.D) && availability._tileRight && !availability._tileRight.gameObject.GetComponent<Tile>().isOccupied)
             {
+                if (_itemData.GetItemStatus() && _itemData.GetEffectTimer() > 0)
+                {
+                    _itemData.CountDownTimer();
+                }
+                else
+                {
+                    _itemData.ItemEffectOff();
+                }
                 transform.position = availability._tileRight.transform.position;
                 PlayerEvent.PlayerMoved();
             }
             else if (Input.GetKeyDown(KeyCode.W) && availability._tileUp && !availability._tileUp.gameObject.GetComponent<Tile>().isOccupied)
             {
+                if (_itemData.GetItemStatus() && _itemData.GetEffectTimer() > 0)
+                {
+                    _itemData.CountDownTimer();
+                }
+                else
+                {
+                    _itemData.ItemEffectOff();
+                }
                 transform.position = availability._tileUp.transform.position;
                 PlayerEvent.PlayerMoved();
             }
             else if (Input.GetKeyDown(KeyCode.A) && availability._tileLeft && !availability._tileLeft.gameObject.GetComponent<Tile>().isOccupied)
             {
+                if (_itemData.GetItemStatus() && _itemData.GetEffectTimer() > 0)
+                {
+                    _itemData.CountDownTimer();
+                }
+                else
+                {
+                    _itemData.ItemEffectOff();
+                }
                 transform.position = availability._tileLeft.transform.position;
                 PlayerEvent.PlayerMoved();
             }
             else if (Input.GetKeyDown(KeyCode.S) && availability._tileDown && !availability._tileDown.gameObject.GetComponent<Tile>().isOccupied)
             {
+                if (_itemData.GetItemStatus() && _itemData.GetEffectTimer() > 0)
+                {
+                    _itemData.CountDownTimer();
+                }
+                else
+                {
+                    _itemData.ItemEffectOff();
+                }
                 transform.position = availability._tileDown.transform.position;
                 PlayerEvent.PlayerMoved();
+            }
+        }
+
+        if (Input.GetKeyDown(KeyCode.Space))
+        {
+            if (_itemData.GetItemAvailability())
+            {
+                _itemData.ItemUsed();
             }
         }
     }
