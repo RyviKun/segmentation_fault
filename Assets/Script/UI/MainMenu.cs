@@ -14,6 +14,7 @@ public class MainMenu : MonoBehaviour
     public GameObject itemPanel1;
     public GameObject itemPanel2;
     [SerializeField] private LevelLoader _levelLoader;
+    [SerializeField] private ItemData _itemData;
     public void PlayButton()
     {
         mainMenu.SetActive(false);

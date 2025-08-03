@@ -1440,6 +1440,7 @@ MonoBehaviour:
   gameWin: {fileID: 2054765636}
   gameOver: {fileID: 862646773}
   _levelLoader: {fileID: 11400000, guid: 271395b7b73a57d43a3c9e4148646a98, type: 2}
+  nextLvlButton: {fileID: 473012371}
 --- !u!1 &1293887853
 GameObject:
   m_ObjectHideFlags: 0

@@ -6,6 +6,7 @@ public class SoundDetector : MonoBehaviour
 {
     [SerializeField] private int _range = 5;
     [SerializeField] private GameObject _dangerTilePrefab;
+    [SerializeField] private ItemData _itemData;
 
     private CircleCollider2D _circleCollider2D;
     private bool _isRendering = false;
@@ -66,7 +67,7 @@ public class SoundDetector : MonoBehaviour
                 {
                     tileList.Add(hit);
 
-                    if (hit.collider.CompareTag("Player"))
+                    if (hit.collider.CompareTag("Player") && _itemData.GetItemType())
                     {
                         _isSeen = true;
                         _lastPlayersTile = GetTileBeneath(hit.collider.transform.position);

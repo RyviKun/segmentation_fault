@@ -4,14 +4,19 @@ using UnityEngine;
 [CreateAssetMenu(fileName = "ItemData", menuName = "ScriptableObjects/ItemData")]
 public class ItemData : ScriptableObject
 {
+    [SerializeField] private bool isInvisCloak = false;
     [SerializeField] private bool isUsable = false;
     [SerializeField] private bool isInUse = false;
     [SerializeField] private int effectTimer;
     public void SetItemInitial()
     {
-        isUsable = false;
+        isUsable = true;
         isInUse = false;
         effectTimer = 0;
+    }
+    public void SetItemType(bool type)
+    {
+        isInvisCloak = type;
     }
     public bool GetItemStatus()
     {
@@ -21,9 +26,17 @@ public class ItemData : ScriptableObject
     {
         return isUsable;
     }
+    public bool GetItemType()
+    {
+        return isInvisCloak;
+    }
     public int GetEffectTimer()
     {
         return effectTimer;
+    }
+    public void ChangeItemType()
+    {
+        isInvisCloak = !isInvisCloak;
     }
     public void CountDownTimer()
     {
