@@ -7,6 +7,7 @@ using UnityEngine;
 public class EntityMove : MonoBehaviour
 {
     [SerializeField] private ItemData _itemData;
+    [SerializeField] public WinLose winLose;
     private MoveDetection _moveDetection;
     private PlayerDetector _playerDetector;
 
@@ -14,6 +15,10 @@ public class EntityMove : MonoBehaviour
     private int _routeIndex = 0;
     private Transform _lastTile = null;
     private bool _isChasing = false;
+    private bool _returningToPatrol = false;
+
+
+    private GameObject _interruptedPatrolTile = null;
 
     void Awake()
     {
@@ -28,44 +33,85 @@ public class EntityMove : MonoBehaviour
 
     void Listener()
     {
+        Vector3 currentTilePosition = transform.position;
+        LayerMask raycastMask = LayerMask.GetMask("Player");
+        RaycastHit2D hitRight = Physics2D.Raycast(currentTilePosition + new Vector3(1, 0, 0), Vector3.back, 3f, raycastMask);
+        RaycastHit2D hitUp = Physics2D.Raycast(currentTilePosition + new Vector3(0, 1, 0), Vector3.back, 3f, raycastMask);
+        RaycastHit2D hitLeft = Physics2D.Raycast(currentTilePosition + new Vector3(-1, 0, 0), Vector3.back, 3f, raycastMask);
+        RaycastHit2D hitDown = Physics2D.Raycast(currentTilePosition + new Vector3(0, -1, 0), Vector3.back, 3f, raycastMask);
+
+        if (hitRight.collider != null && hitRight.collider.CompareTag("Player"))
+        {
+            winLose.GameOver();
+        }
+        if (hitUp.collider != null && hitUp.collider.CompareTag("Player"))
+        {
+            winLose.GameOver();
+        }
+        if (hitLeft.collider != null && hitLeft.collider.CompareTag("Player"))
+        {
+            winLose.GameOver();
+        }
+        if (hitDown.collider != null && hitDown.collider.CompareTag("Player"))
+        {
+            winLose.GameOver();
+        }
+
         GameObject startTile = _moveDetection.GetTile();
         GameObject goalTile = _playerDetector.GetTile();
 
+        // === Player Seen → Start chasing
         if (_playerDetector.GetIsSeen())
         {
+            if (!_isChasing && !_returningToPatrol)
+                _interruptedPatrolTile = startTile;
+
             _isChasing = true;
+            _returningToPatrol = false;
         }
 
-        // === CHASING MODE ===
+        // === A* target logic
+        GameObject targetTile = null;
         if (_isChasing && !_itemData.GetItemStatus())
         {
             if (goalTile == null)
             {
                 if (_lastTile == null) return;
-                goalTile = _lastTile.gameObject;
+                targetTile = _lastTile.gameObject;
             }
             else
             {
+                targetTile = goalTile;
                 _lastTile = goalTile.transform;
             }
+        }
+        else if (_returningToPatrol && _interruptedPatrolTile != null)
+        {
+            targetTile = _interruptedPatrolTile;
+        }
+
+        // === A* CHASING or RETURNING TO PATROL ===
+        if ((targetTile != null && (_isChasing || _returningToPatrol)))
+        {
+            GameObject pathStartTile = _moveDetection.GetTile();
 
             Dictionary<GameObject, NodeData> open = new();
             Dictionary<GameObject, NodeData> closed = new();
 
             NodeData startNode = new()
             {
-                tile = startTile,
+                tile = pathStartTile,
                 gCost = 0f,
-                hCost = Vector2.Distance(startTile.transform.position, goalTile.transform.position),
+                hCost = Vector2.Distance(pathStartTile.transform.position, targetTile.transform.position),
                 parent = null
             };
-            open[startTile] = startNode;
+            open[pathStartTile] = startNode;
 
             while (open.Count > 0)
             {
                 var current = open.OrderBy(n => n.Value.fCost).First();
 
-                if (current.Key == goalTile)
+                if (current.Key == targetTile)
                 {
                     closed[current.Key] = current.Value;
                     break;
@@ -90,7 +136,7 @@ public class EntityMove : MonoBehaviour
                         {
                             tile = neighbor,
                             gCost = tentativeG,
-                            hCost = Vector2.Distance(neighbor.transform.position, goalTile.transform.position),
+                            hCost = Vector2.Distance(neighbor.transform.position, targetTile.transform.position),
                             parent = current.Value
                         };
                         open[neighbor] = newNode;
@@ -98,14 +144,15 @@ public class EntityMove : MonoBehaviour
                 }
             }
 
-            if (!closed.ContainsKey(goalTile))
+            if (!closed.ContainsKey(targetTile))
             {
                 _isChasing = false;
+                _returningToPatrol = true;
                 return;
             }
 
             List<GameObject> path = new();
-            NodeData node = closed[goalTile];
+            NodeData node = closed[targetTile];
             while (node != null)
             {
                 path.Add(node.tile);
@@ -115,51 +162,97 @@ public class EntityMove : MonoBehaviour
 
             if (path.Count > 1)
             {
-                Vector2 toPlayerDir = _lastTile.position - transform.position;
+                Vector2 toTarget = path[1].transform.position - transform.position;
                 transform.position = path[1].transform.position;
-
-                float angle = Mathf.Atan2(toPlayerDir.y, toPlayerDir.x) * Mathf.Rad2Deg;
+                float angle = Mathf.Atan2(toTarget.y, toTarget.x) * Mathf.Rad2Deg;
                 transform.rotation = Quaternion.Euler(0f, 0f, angle);
             }
-            else
+
+            // === Chase or return ends ===
+            if (path.Count <= 1)
             {
-                _isChasing = false;
+                if (_isChasing && !_playerDetector.GetIsSeen())
+                {
+                    _isChasing = false;
+                    _returningToPatrol = true;
+                }
+                else if (_returningToPatrol)
+                {
+                    _returningToPatrol = false;
+                    ResumeRouteFromClosest(_moveDetection.GetTile());
+                }
             }
+
+            return;
         }
 
-        // === PATROLLING MODE ===
-        else
+        // === PATROLLING ===
+        if (_route.Count == 0) return;
+
+        int moveDirection = _route[_routeIndex];
+        GameObject currentTile = _moveDetection.GetTile();
+        Tile tile = currentTile.GetComponent<Tile>();
+
+        GameObject nextTile = moveDirection switch
         {
-            if (_route.Count == 0) return;
+            0 => tile._tileRight,
+            1 => tile._tileUp,
+            2 => tile._tileLeft,
+            3 => tile._tileDown,
+            _ => null
+        };
 
-            int moveDirection = _route[_routeIndex];
-            GameObject currentTile = _moveDetection.GetTile();
-            Tile tile = currentTile.GetComponent<Tile>();
+        if (nextTile != null && !nextTile.GetComponent<Tile>().isOccupied)
+        {
+            Vector2 dir = nextTile.transform.position - transform.position;
+            transform.position = nextTile.transform.position;
+            float angle = Mathf.Atan2(dir.y, dir.x) * Mathf.Rad2Deg;
+            transform.rotation = Quaternion.Euler(0, 0, angle);
+        }
 
-            GameObject targetTile = moveDirection switch
+        _routeIndex++;
+        if (_routeIndex >= _route.Count)
+        {
+            _routeIndex = 0;
+        }
+    }
+
+    void ResumeRouteFromClosest(GameObject currentTile)
+    {
+        if (currentTile == null || _route.Count == 0) return;
+
+        GameObject bestTile = null;
+        float bestDist = float.MaxValue;
+        int bestIndex = 0;
+
+        for (int i = 0; i < _route.Count; i++)
+        {
+            GameObject patrolTile = GetTileByDirectionIndex(i, currentTile);
+            if (patrolTile == null) continue;
+
+            float dist = Vector2.Distance(currentTile.transform.position, patrolTile.transform.position);
+            if (dist < bestDist)
             {
-                0 => tile._tileRight,
-                1 => tile._tileUp,
-                2 => tile._tileLeft,
-                3 => tile._tileDown,
-                _ => null
-            };
-
-            if (targetTile != null && !targetTile.GetComponent<Tile>().isOccupied)
-            {
-                Vector2 dir = targetTile.transform.position - transform.position;
-                transform.position = targetTile.transform.position;
-                float angle = Mathf.Atan2(dir.y, dir.x) * Mathf.Rad2Deg;
-                transform.rotation = Quaternion.Euler(0, 0, angle);
-            }
-
-            _routeIndex++;
-            if (_routeIndex >= _route.Count)
-            {
-                _route.Reverse();
-                _routeIndex = 0;
+                bestDist = dist;
+                bestTile = patrolTile;
+                bestIndex = i;
             }
         }
+
+        _routeIndex = bestIndex;
+    }
+
+    GameObject GetTileByDirectionIndex(int index, GameObject currentTile)
+    {
+        Tile tile = currentTile.GetComponent<Tile>();
+        return _route[index] switch
+        {
+            0 => tile._tileRight,
+            1 => tile._tileUp,
+            2 => tile._tileLeft,
+            3 => tile._tileDown,
+            _ => null
+        };
     }
 
     public void SetEnemyRoute(string route)
