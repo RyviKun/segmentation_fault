@@ -62,25 +62,25 @@ public class GridConfig : ScriptableObject
         { 3, new LevelData{
             stringLayout =
             @"1, 0, 3-3-5-3-3333333333333311111111111111, 2, 3-3-5-3-3333333311111111,
-0, 0, 0, 2, 0,
-0, 0, 0, 2, 0,
-2, 2, 0, 2, 0,
-2, 2, 0, 2, 0,
-0, 0, 0, 0, 0,
-0, 0, 0, 0, 0,
-3, 0, 0, 0, 0,
-0, 2, 0, 0, 0,
-0, 2, 0, 0, 2,
-0, 2, 0, 0, 2,
-0, 0, 0, 0, 2,
-0, 0, 0, 0, 2,
-0, 0, 0, 0, 0,
-0, 0, 0, 0, 0,
-0, 2, 2, 2, 0,
-0, 2, 2, 2, 0,
-0, 0, 0, 0, 0,
-0, 0, 0, 0, 0,
-3-1-5-3-333333333333333111111111111111, 0, 0, 0, 5,",
+            0, 0, 0, 2, 0,
+            0, 0, 0, 2, 0,
+            2, 2, 0, 2, 0,
+            2, 2, 0, 2, 0,
+            0, 0, 0, 0, 0,
+            0, 0, 0, 0, 0,
+            3, 0, 0, 0, 0,
+            0, 2, 0, 0, 0,
+            0, 2, 0, 0, 2,
+            0, 2, 0, 0, 2,
+            0, 0, 0, 0, 2,
+            0, 0, 0, 0, 2,
+            0, 0, 0, 0, 0,
+            0, 0, 0, 0, 0,
+            0, 2, 2, 2, 0,
+            0, 2, 2, 2, 0,
+            0, 0, 0, 0, 0,
+            0, 0, 0, 0, 0,
+            3-1-5-3-333333333333333111111111111111, 0, 0, 0, 5,",
             width = 5,
             height = 20
             }
@@ -122,11 +122,15 @@ public class GridConfig : ScriptableObject
 
                     break;
                 case "3":
-                    layout[i] = new EnemyTile(int.Parse(current[1]), int.Parse(current[2]), current[3]);
+                    layout[i] = new EnemyTile(int.Parse(current[1]), int.Parse(current[2]), int.Parse(current[3]), current[4]);
 
                     break;
                 case "4":
                     layout[i] = new SoundTile(int.Parse(current[1]), int.Parse(current[1]));
+
+                    break;
+                case "5":
+                    layout[i] = new GoalTile(0);
 
                     break;
             }

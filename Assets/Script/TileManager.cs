@@ -13,6 +13,8 @@ public class TileManager : MonoBehaviour
     [SerializeField] private GameObject _enemyPrefab;
     [SerializeField] private GameObject _itemPrefab;
     [SerializeField] private GameObject _soundDetectorPrefab;
+    [SerializeField] private GameObject _goalTilePrefab;
+    [SerializeField] private WinLose _winLose;
     private Vector2 spawnPoint;
     void Awake()
     {
@@ -56,6 +58,7 @@ public class TileManager : MonoBehaviour
                     var enemyObj = Instantiate(_enemyPrefab, new Vector2(x, y), ParseRotation(enemyTile.direction));
                     Debug.Log("Rotation " + enemyTile.direction);
                     enemyObj.GetComponent<EntityMove>().SetEnemyRoute(enemyTile.route);
+                    enemyObj.GetComponent<EntityMove>().winLose = this._winLose;
                 }
 
                 if (current is ItemTile)
@@ -67,6 +70,11 @@ public class TileManager : MonoBehaviour
                 {
                     var soundObj = Instantiate(_soundDetectorPrefab, new Vector2(x, y), ParseRotation(soundTile.direction));
                     soundObj.GetComponent<SoundDetector>().SetRange(soundTile.range);
+                }
+
+                if (current is GoalTile goalTile)
+                {
+                    var goalObj = Instantiate(_goalTilePrefab, new Vector2(x, y), ParseRotation(goalTile.direction));
                 }
                 count++;
                 

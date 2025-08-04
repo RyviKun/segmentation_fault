@@ -30,10 +30,12 @@ public class EnemyTile : TileData
 {
     public string route;
     public int range;
-    public EnemyTile(int direction, int range, string route) : base(direction)
+    public int fov;
+    public EnemyTile(int direction, int range, int fov, string route) : base(direction)
     {
         this.route = route;
         this.range = range;
+        this.fov = fov;
     }
 }
 
@@ -49,4 +51,9 @@ public class SoundTile : TileData
 public class ItemTile : TileData
 {
     public ItemTile(int direction) : base(direction) { }
+}
+
+public class GoalTile : TileData
+{
+    public GoalTile(int direction) : base(direction) { }
 }
