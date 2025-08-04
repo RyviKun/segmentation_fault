@@ -55,8 +55,11 @@ public class GridConfig : ScriptableObject
             0, 0, 0, 0, 0,
             0, 0, 0, 0, 0,
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
             0, 0, 0, 0, 0",
 =======
+=======
+>>>>>>> Stashed changes
             0, 0, 0, 0, 0,
             0, 2, 0, 0, 0,
             0, 2, 0, 0, 2,
