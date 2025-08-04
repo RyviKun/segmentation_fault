@@ -82,7 +82,7 @@ public class GridConfig : ScriptableObject
             0, 0, 0, 0, 0,
             3-1-5-3-333333333333333111111111111111, 0, 0, 0, 5,",
             width = 5,
-            height = 5
+            height = 20
             }
         }
     };
