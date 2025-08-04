@@ -101,6 +101,10 @@ InitTestScene*.unity*
 .vscode/launch.json
 .vscode/settings.json
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
+=======
+/HorsingAround/.vscode
+>>>>>>> Stashed changes
 =======
 /HorsingAround/.vscode
 >>>>>>> Stashed changes
